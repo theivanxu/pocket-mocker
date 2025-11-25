@@ -63,15 +63,15 @@
       {#if minimized && $rules.length > 0}
         <span class="rule-count">{$rules.length}</span>
       {/if}
+      {#if !minimized && activeMainTab === 'rules'}
+        <button class="icon-btn" on:click={() => showAddPanel = !showAddPanel} title="新增规则">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+        </button>
+      {/if}
     </div>
     
-    {#if !minimized}
-      <div class="main-tabs">
-        <button class="main-tab-btn" class:active={activeMainTab === 'rules'} on:click={() => activeMainTab = 'rules'}>Rules</button>
-        <button class="main-tab-btn" class:active={activeMainTab === 'network'} on:click={() => activeMainTab = 'network'}>Network</button>
-      </div>
-    {/if}
-
     <button class="toggle-btn" on:click={() => minimized = !minimized} title={minimized ? '展开面板' : '收起面板'}>
       {#if minimized}
         <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
@@ -84,6 +84,13 @@
       {/if}
     </button>
   </div>
+
+  {#if !minimized}
+    <div class="main-tabs">
+      <button class="main-tab-btn" class:active={activeMainTab === 'rules'} on:click={() => activeMainTab = 'rules'}>Rules</button>
+      <button class="main-tab-btn" class:active={activeMainTab === 'network'} on:click={() => activeMainTab = 'network'}>Network</button>
+    </div>
+  {/if}
 
   {#if !minimized}
     <div class="content">
