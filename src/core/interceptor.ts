@@ -1,4 +1,5 @@
 import { requestLogs } from "./log-store";
+import { appReady } from './store';
 
 export interface MockRule {
   id: string;
@@ -23,9 +24,21 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function patchFetch() {
   const originalFetch = window.fetch;
+
   window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
-    const startTime = performance.now(); // Start timing
+    // 1. 先解析 URL，不要 await
     const url = typeof input === 'string' ? input : (input instanceof Request ? input.url : input.toString());
+
+    // 🔥【关键修复】🔥 
+    // 如果是 PocketMock 自己的内部请求，直接放行，绝对不要 await appReady！
+    // 否则会造成死锁：初始化在等 fetch，fetch 在等初始化
+    if (url.includes('/__pocket_mock/')) {
+      return originalFetch(input, init);
+    }
+    await appReady;
+
+    const startTime = performance.now(); // Start timing
+    // const url = typeof input === 'string' ? input : (input instanceof Request ? input.url : input.toString());
     const method = (init?.method || 'GET').toUpperCase();
 
     // Find matching and enabled rules
@@ -93,56 +106,66 @@ function patchXHR() {
 
     // 2. Hijack send method: decide whether to send real request or return fake data
     send(body?: Document | XMLHttpRequestBodyInit | null): void {
-      const matchedRule = activeRules.find(r =>
-        r.enabled && this._url.includes(r.url) && r.method === this._method
-      );
+      const run = async () => {
+        if (this._url.includes('/__pocket_mock/')) {
+          super.send(body);
+          return;
+        }
+        await appReady;
 
-      if (matchedRule) {
-        // Simulate response process
-        const mockResponse = async () => {
-          if (matchedRule.delay > 0) await sleep(matchedRule.delay);
+        const matchedRule = activeRules.find(r =>
+          r.enabled && this._url.includes(r.url) && r.method === this._method
+        );
 
-          // === Key dark magic: override read-only properties ===
-          // Browser normally doesn't allow direct assignment to this.responseText, must use defineProperty
-          Object.defineProperty(this, 'status', { value: matchedRule.status });
-          Object.defineProperty(this, 'statusText', { value: matchedRule.status === 200 ? 'OK' : 'Error' });
-          Object.defineProperty(this, 'readyState', { value: 4 }); // DONE
-          Object.defineProperty(this, 'response', { value: JSON.stringify(matchedRule.response) });
-          Object.defineProperty(this, 'responseText', { value: JSON.stringify(matchedRule.response) });
-          // This step is for axios compatibility, axios will automatically parse JSON
-          Object.defineProperty(this, 'responseURL', { value: this._url });
+        if (matchedRule) {
+          // Simulate response process
+          const mockResponse = async () => {
+            if (matchedRule.delay > 0) await sleep(matchedRule.delay);
 
-          // Manually trigger events to deceive business code that "request is complete"
-          // dispatchEvent will automatically trigger corresponding callback functions, no manual call needed
-          this.dispatchEvent(new Event('readystatechange'));
-          this.dispatchEvent(new Event('load'));
+            // === Key dark magic: override read-only properties ===
+            // Browser normally doesn't allow direct assignment to this.responseText, must use defineProperty
+            Object.defineProperty(this, 'status', { value: matchedRule.status });
+            Object.defineProperty(this, 'statusText', { value: matchedRule.status === 200 ? 'OK' : 'Error' });
+            Object.defineProperty(this, 'readyState', { value: 4 }); // DONE
+            Object.defineProperty(this, 'response', { value: JSON.stringify(matchedRule.response) });
+            Object.defineProperty(this, 'responseText', { value: JSON.stringify(matchedRule.response) });
+            // This step is for axios compatibility, axios will automatically parse JSON
+            Object.defineProperty(this, 'responseURL', { value: this._url });
 
-          // Log recording
-          const duration = Math.round(performance.now() - this._startTime);
-          requestLogs.add({
-            method: this._method,
-            url: this._url,
-            status: matchedRule.status,
-            timestamp: Date.now(),
-            duration,
-            isMock: true
-          });
+            // Manually trigger events to deceive business code that "request is complete"
+            // dispatchEvent will automatically trigger corresponding callback functions, no manual call needed
+            this.dispatchEvent(new Event('readystatechange'));
+            this.dispatchEvent(new Event('load'));
 
-          const headerString = Object.entries({
-            'content-type': 'application/json',
-            ...matchedRule.headers
-          }).map(([k, v]) => `${k}: ${v}`).join('\r\n');
+            // Log recording
+            const duration = Math.round(performance.now() - this._startTime);
+            requestLogs.add({
+              method: this._method,
+              url: this._url,
+              status: matchedRule.status,
+              timestamp: Date.now(),
+              duration,
+              isMock: true
+            });
 
-          this.getAllResponseHeaders = () => headerString;
-          this.getResponseHeader = (name: string) => matchedRule.headers[name.toLowerCase()] || null;
-        };
+            const headerString = Object.entries({
+              'content-type': 'application/json',
+              ...matchedRule.headers
+            }).map(([k, v]) => `${k}: ${v}`).join('\r\n');
 
-        mockResponse();
-        return; // ⛔️ Prevent native send from sending request
+            this.getAllResponseHeaders = () => headerString;
+            this.getResponseHeader = (name: string) => matchedRule.headers[name.toLowerCase()] || null;
+          };
+
+          mockResponse();
+          return; // ⛔️ Prevent native send from sending request
+        }
+
+        // No rule matched, pass through to native XHR
+        super.send(body);
       }
 
-      // No rule matched, pass through to native XHR
-      super.send(body);
+      run()
     }
   }
   // Replace global object
