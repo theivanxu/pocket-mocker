@@ -4,7 +4,8 @@
 > 一款轻量级、可视化的浏览器内 HTTP Mock 工具，专为现代前端开发而设计。
 
 [![npm 版本](https://badge.fury.io/js/pocket-mock.svg)](https://badge.fury.io/js/pocket-mock)
-[![开源协议: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![开源协议: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
+
 [English](README.md) | **中文**
 
 **PocketMock** 是一款零侵入的前端 Mock 工具。与 Postman 或传统的 `mock.js` 不同，它直接**嵌入在你的页面中**，让你在开发时可以实时拦截 `fetch` 和 `XMLHttpRequest`，动态修改响应数据、模拟网络延迟和异常状态码。
@@ -14,12 +15,13 @@
 ## ✨ 核心特性
 
 - **⚡️ 双核拦截引擎**：原生支持 `fetch` 和 `XMLHttpRequest` (Ajax)，无缝兼容 Axios 等第三方库
-- **🎨 可视化控制台**：内置 Svelte 编写的调试浮窗，支持 JSON 高亮编辑、规则开关、实时生效
+- **🎨 智能控制台**：内置 **CodeMirror 6** 编辑器（支持 JS 语法高亮），自适应 **深色/浅色主题**，提供优雅的 **Toast** 通知
+- **🧠 动态响应**：支持编写 JavaScript 函数，根据请求参数 (Query/Body) 动态生成响应数据，处理复杂逻辑
 - **🛡️ Shadow DOM 隔离**：UI 样式完全隔离，绝不污染你的业务页面 CSS，也不受外部影响
 - **🐢 网络环境模拟**：一键模拟接口 **延迟 (Latency)**、**404/500 报错**，轻松测试骨架屏和错误边界
 - **📂 双模持久化**：
-  - **本地模式**：默认使用 LocalStorage，刷新不丢失，零配置上手
-  - **服务器模式**：配合 Vite 插件，自动将规则同步保存到本地 `pocket-mock.json` 文件，实现**团队共享**
+  - **本地模式**：默认使用 LocalStorage，刷新不丢失
+  - **服务器模式**：配合 Vite 插件，自动将规则同步保存到本地文件，实现**团队共享**
 
 ## 📦 安装
 
@@ -46,21 +48,20 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
-启动项目后，页面右下角会出现 **PocketMock** 浮窗，即可开始 Mock 之旅！所有配置将保存在浏览器的 LocalStorage 中。
+启动项目后，页面右下角会出现 **PocketMock** 浮窗，即可开始 Mock 之旅！
 
 ### 方式二：团队协作模式（Vite 插件）🔥 推荐
 
-适合生产级项目。通过 Vite 插件打通文件系统，将 Mock 规则保存为 `pocket-mock.json` 并提交到 Git 仓库，团队成员共享同一套 Mock 数据。
+适合生产级项目。通过 Vite 插件打通文件系统，将 Mock 规则保存为配置文件并提交到 Git 仓库。
 
 **1. 配置 `vite.config.ts`**
 
 ```typescript
 import { defineConfig } from 'vite';
-import pocketMockPlugin from 'pocket-mock/vite-plugin'; // 引入插件
+import pocketMockPlugin from 'pocket-mock/vite-plugin';
 
 export default defineConfig({
   plugins: [
-    // ... 其他插件
     pocketMockPlugin()
   ]
 });
@@ -68,24 +69,48 @@ export default defineConfig({
 
 **2. 启动项目**
 
-运行 `npm run dev`。PocketMock 会自动检测到插件环境，并切换到 **服务器模式**。当你修改规则时，根目录下会自动生成 `pocket-mock.json` 文件。
+运行 `npm run dev`。PocketMock 会自动检测到插件环境，并切换到 **服务器模式**。
 
-## 🛠️ 功能详解
+## 🛠️ 进阶功能
 
-### 规则编辑
+### 动态响应 (Dynamic Response)
 
-支持配置以下字段：
+不再局限于静态 JSON！你可以编写 JavaScript 函数来根据请求动态生成响应。
+
+```javascript
+// 在 Dashboard 编辑器或配置文件中：
+(req) => {
+  // 获取 Query 参数 (如 /api/user?id=1)
+  if (req.query.id === '1') {
+    return { id: 1, name: 'Admin', role: 'admin' };
+  }
+  
+  // 获取 JSON Body
+  if (req.body && req.body.type === 'guest') {
+    return { id: 2, name: 'Guest', role: 'guest' };
+  }
+
+  // 返回自定义状态码和 Header
+  return {
+    status: 404,
+    headers: { 'X-Error': 'User not found' },
+    body: { error: 'User not found' }
+  };
+}
+```
+
+### 规则字段详解
 
 ```typescript
 interface MockRule {
   id: string;           // 唯一标识符
-  method: string;       // HTTP 方法：GET、POST、PUT、DELETE
+  method: string;       // HTTP 方法：GET, POST...
   url: string;          // URL 匹配模式
-  response: any;        // Mock 响应数据
-  enabled: boolean;     // 启用/禁用此规则
-  delay: number;        // 网络延迟，单位毫秒 (0-5000)
-  status: number;       // HTTP 状态码 (200、404、500 等)
-  headers: Record<string, string>; // 自定义响应头
+  response: any | ((req) => any); // 静态数据 或 动态函数
+  enabled: boolean;     // 启用/禁用
+  delay: number;        // 网络延迟 (ms)
+  status: number;       // HTTP 状态码
+  headers: Record<string, string>;
 }
 ```
 

@@ -15,13 +15,14 @@
 ## ✨ Features
 
 - **⚡ Dual-Core Interception Engine**: Native support for both `fetch` and `XMLHttpRequest` (Ajax), seamlessly compatible with Axios and other third-party libraries
-- **🎨 Visual Console**: Built-in Svelte debugging panel with JSON syntax highlighting, toggle switches, and real-time preview
+- **🎨 Visual Console**: Built-in Svelte debugging panel with **CodeMirror 6** editor (JS syntax highlighting), toggle switches, and real-time preview
+- **🧠 Dynamic Response**: Support writing JavaScript functions to handle complex logic and return dynamic data based on request parameters
+- **✨ Smart UI**: Auto-adaptive **Light/Dark Theme**, elegant **Toast** notifications, and responsive layout
 - **🛡️ Shadow DOM Isolation**: UI styles are completely isolated, never polluting your application's CSS or being affected by external styles
 - **🐢 Network Simulation**: One-click simulation of API **latency**, **404/500 errors**, perfect for testing skeleton screens and error boundaries
-- **🔄 Recursive Redirect Support**: Unique recursive interception algorithm with perfect support for `301/302` API redirect simulation
 - **📂 Dual-Mode Persistence**:
-  - **Local Mode**: Default browser LocalStorage storage, rules persist across page refreshes, zero configuration
-  - **Server Mode**: Vite plugin integration saves rules to local `pocket-mock.json` file for **team collaboration**
+  - **Local Mode**: Default browser LocalStorage storage, rules persist across page refreshes
+  - **Server Mode**: Vite plugin integration saves rules to local files for **team collaboration**
 
 ## 📦 Installation
 
@@ -48,11 +49,11 @@ if (process.env.NODE_ENV === 'development') {
 }
 ```
 
-After starting your project, you'll see the **PocketMock** floating panel in the bottom-right corner. All configurations are automatically saved to browser's LocalStorage.
+After starting your project, you'll see the **PocketMock** floating panel in the bottom-right corner.
 
 ### Method 2: Team Collaboration Mode (Vite Plugin) 🔥 Recommended
 
-Ideal for production-level projects. The Vite plugin integrates with the file system, saving Mock rules to `pocket-mock.json` for team sharing via Git.
+Ideal for production-level projects. The Vite plugin integrates with the file system, saving Mock rules to config files for team sharing.
 
 **1. Configure `vite.config.ts`**
 
@@ -62,7 +63,6 @@ import pocketMockPlugin from 'pocket-mock/vite-plugin';
 
 export default defineConfig({
   plugins: [
-    // ... other plugins
     pocketMockPlugin()
   ]
 });
@@ -70,24 +70,50 @@ export default defineConfig({
 
 **2. Start Development**
 
-Run `npm run dev`. PocketMock automatically detects the plugin environment and switches to **Server Mode**. When you modify rules, it generates `pocket-mock.json` in your project root.
+Run `npm run dev`. PocketMock automatically detects the plugin environment and switches to **Server Mode**.
 
-## 🛠️ API Reference
+## 🛠️ Advanced Features
+
+### Dynamic Response (Function Mock)
+
+You are not limited to static JSON. You can write JavaScript functions to generate responses dynamically based on the request!
+
+```javascript
+// In the Dashboard editor or config file:
+(req) => {
+  // Access query parameters (e.g. /api/user?id=1)
+  if (req.query.id === '1') {
+    return { id: 1, name: 'Admin User', role: 'admin' };
+  }
+  
+  // Access JSON body
+  if (req.body && req.body.type === 'guest') {
+    return { id: 2, name: 'Guest', role: 'guest' };
+  }
+
+  // Return custom status and headers
+  return {
+    status: 404,
+    headers: { 'X-Error': 'User not found' },
+    body: { error: 'User not found' }
+  };
+}
+```
 
 ### Rule Configuration
 
-Each Mock rule supports the following configuration fields:
+Each Mock rule supports the following fields:
 
 ```typescript
 interface MockRule {
-  id: string;           // Unique identifier
-  method: string;       // HTTP method: GET, POST, PUT, DELETE
-  url: string;          // URL pattern for matching
-  response: any;        // Mock response data
-  enabled: boolean;     // Enable/disable this rule
-  delay: number;        // Network delay in milliseconds (0-5000)
-  status: number;       // HTTP status code (200, 404, 500, etc.)
-  headers: Record<string, string>; // Custom response headers
+  id: string;
+  method: string;       // GET, POST, PUT, DELETE...
+  url: string;          // URL pattern (supports /api/users/:id)
+  response: any | ((req) => any); // Static data OR Function
+  enabled: boolean;
+  delay: number;        // Latency in ms
+  status: number;       // HTTP Status (200, 400, 500...)
+  headers: Record<string, string>;
 }
 ```
 

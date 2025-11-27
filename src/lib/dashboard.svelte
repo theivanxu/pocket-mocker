@@ -7,6 +7,8 @@
   import Select from './ui/Select.svelte';
   import Switch from './ui/Switch.svelte';
   import JsonEditor from './ui/JsonEditor.svelte';
+  import Toast from './ui/Toast.svelte';
+  import { showToast } from './ui/toast-store';
   
   // Control panel expand/collapse
   let minimized = false;
@@ -34,7 +36,7 @@
 
   function handleAddRule() {
     if (!newRuleUrl) {
-      alert("Please enter URL");
+      showToast("Please enter URL", "warning");
       return;
     }
     addRule(newRuleUrl, newRuleMethod);
@@ -75,8 +77,9 @@
         updateRuleDelay(editingId, parseInt(editDelay) || 0);
 
         editingId = null; // Exit edit mode
+        showToast("Rule saved successfully", "success");
       } else {
-        alert("Invalid JSON format, please check Body or Headers!");
+        showToast("Invalid JSON format, please check Body or Headers!", "error");
       }
     }
   }
@@ -208,6 +211,7 @@
   class:minimized={minimized} 
   bind:this={containerRef}
 >
+  <Toast />
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <div class="header" on:mousedown={handleMouseDown}>
     <div class="title-area">
