@@ -54,6 +54,7 @@
 <style>
   .json-editor-container {
     height: 100%;
+    min-height: 150px;
     width: 100%;
     overflow: auto; /* Ensures scrollability if content exceeds bounds */
     border: 1px solid var(--pm-border); /* Use existing border variable */
