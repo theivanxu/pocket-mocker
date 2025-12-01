@@ -1,21 +1,27 @@
 # Changelog
 
-## v1.0.0 - YYYY-MM-DD
+## v1.0.0 - 2025-12-01
 
-### ✨ Features
-- **Smart Mock Data Generation**: Introduced intelligent data generation with support for `@guid`, `@cname`, `@image`, `@integer`, `@boolean`, `@float`, `@pick`, `@date`, and `@string` placeholders, as well as array generation using `key|count` syntax.
-- **Configuration Import**:
-  - **Postman Collection Import**: Added ability to import Postman Collection v2.1 files, converting requests into PocketMock rules with intelligent data inference from request bodies.
-  - **OpenAPI 3.0 Import**: Added support for importing OpenAPI 3.0 specifications, converting paths and response schemas into Mock rules with smart mock data generation and path parameter (`{id}` to `:id`) conversion.
-- **Dashboard Enhancements**:
-  - **Rules Filtering and Search**: Implemented a search bar and filter options (by method, status, text) for the rules list, enhancing usability for larger rule sets.
-  - **Improved Logging**: Refined console logs in the Vite plugin for a cleaner developer experience.
+### 🎉 Initial Release
 
-### 🐛 Bug Fixes
-- Fixed a critical issue in `src/core/interceptor.ts` where `patchXHR` had incorrect variable scope and caused syntax errors.
-- Corrected the missing export of `updateRules` in `src/core/store.ts` which led to runtime errors in the dashboard.
+**PocketMock** v1.0.0 is officially released! This is a lightweight, zero-intrusion, visualization-first frontend mock tool designed to revolutionize your development workflow.
 
-### ⚙️ Engineering Improvements
-- Established a robust integration test suite in `src/main.ts` to verify core functionalities, including CRUD, interception, smart mock, dynamic response, and import features.
-- Cleaned up verbose `console.log` statements from the Vite plugin.
-- Added comprehensive type definitions for Postman and OpenAPI import structures.
+### ✨ Key Features
+
+- **⚡️ Dual-Core Interception Engine**: Natively supports both `fetch` and `XMLHttpRequest` (Ajax), ensuring seamless compatibility with libraries like Axios.
+- **🎨 Smart Dashboard**: A built-in visual control panel injected into your page. It features a CodeMirror 6 editor, dark/light theme support, and intuitive rule management.
+- **🧠 Intelligent Mock Data Generation**: Built-in "Smart Mock" generator allows you to create realistic data effortlessly using placeholders like `@guid`, `@cname`, `@image`, `@email`, and `@date`. Supports complex nested structures and array generation (`key|count`).
+- **📥 One-Click Import**:
+  - **Postman Collection v2.1**: Import your existing Postman collections directly.
+  - **OpenAPI 3.0 (Swagger)**: Import API specifications.
+  - **Smart Inference**: Automatically generates mock data based on field names and types during import (e.g., `avatar` field gets an image URL).
+- **🔄 Dynamic Response**: Write JavaScript functions to dynamically generate responses based on request Query, Body, or Headers, enabling simulation of complex business logic.
+- **🌐 Full-Featured Network Panel**:
+  - Real-time logging of all requests (Mocked & Real).
+  - Detailed inspection of request/response bodies.
+  - **"One-Click Mock"**: Instantly convert a real network request into a mock rule.
+  - Powerful search and filtering capabilities.
+- **📂 Dual-Mode Persistence**:
+  - **Local Mode**: Zero-config, data saved in LocalStorage.
+  - **Server Mode**: Paired with the Vite plugin, mock rules are automatically synced to a local file (`pocket-mock.json`), enabling team collaboration and version control.
+- **🛡️ Shadow DOM Isolation**: The entire UI is encapsulated within Shadow DOM, ensuring zero style conflicts with your application.

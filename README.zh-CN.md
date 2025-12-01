@@ -10,7 +10,7 @@
 
 **PocketMock** 是一款零侵入的前端 Mock 工具。与 Postman 或传统的 `mock.js` 不同，它直接**嵌入在你的页面中**，让你在开发时可以实时拦截 `fetch` 和 `XMLHttpRequest`，动态修改响应数据、模拟网络延迟和异常状态码。
 
-*(此处建议放一张 GIF 动图，展示打开浮窗、修改 JSON、点击测试按钮的全过程)*
+![PocketMock Hero Demo](docs/hero-demo.gif)
 
 ## ✨ 核心特性
 
@@ -218,6 +218,8 @@ PocketMock 内置了强大的 **智能 Mock 生成器**，让你可以通过简�
 ```
 
 ### 📥 配置导入
+
+![PocketMock Import Demo](docs/import-demo.gif)
 
 支持从主流 API 文档格式直接导入 Mock 规则。智能数据生成功能自动将请求体和 Schema 定义转换为逼真的 Mock 响应数据。
 
