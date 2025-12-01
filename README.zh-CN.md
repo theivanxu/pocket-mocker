@@ -1,6 +1,7 @@
-# PocketMocker
+# 🛠️ PocketMock
 
 > **所见即所得的浏览器端可视化 HTTP 调试工具。**
+>
 > 一款轻量级、可视化的浏览器内 HTTP Mock 工具，专为现代前端开发而设计。
 
 [![npm 版本](https://badge.fury.io/js/pocket-mocker.svg)](https://badge.fury.io/js/pocket-mocker)
@@ -8,25 +9,20 @@
 
 [English](README.md) | **中文**
 
-## 🎥 交互式演示
-
-[**在浏览器中体验 PocketMock**](https://tianchangnorth.github.io/pocket-mock/) - 无需安装的交互式 WebP 演示
-
-> 上面的交互式演示展示了 PocketMock 的核心功能，包括智能数据生成、动态响应函数和实时网络监控 - 全部直接在浏览器中运行，无需任何安装。
-
+![PocketMock Demo](docs/pocket.webp)
 
 **PocketMock** 是一款零侵入的前端 Mock 工具。与 Postman 或传统的 `mock.js` 不同，它直接**嵌入在你的页面中**，让你在开发时可以实时拦截 `fetch` 和 `XMLHttpRequest`，动态修改响应数据、模拟网络延迟和异常状态码。
 
 ## ✨ 核心特性
 
-- **双核拦截引擎**：原生支持 `fetch` 和 `XMLHttpRequest` (Ajax)，无缝兼容 Axios 等第三方库
-- **智能控制台**：内置 **CodeMirror 6** 编辑器（支持 JS 语法高亮），自适应 **深色/浅色主题**，提供优雅的 **Toast** 通知
-- **动态响应**：支持编写 JavaScript 函数，根据请求参数 (Query/Body) 动态生成响应数据，处理复杂逻辑
-- **功能全面的网络面板**：实时记录所有网络请求（Mocked 或真实请求），支持 **搜索与筛选**、**详情查看** (请求/响应体)、**单条日志删除**，以及 **"一键 Mock"** 功能（将真实请求转化为 Mock 规则）
-- **配置导入**：支持从 **Postman Collections** 和 **OpenAPI 3.0** 规范直接导入 Mock 规则，自动智能生成数据
-- **Shadow DOM 隔离**：UI 样式完全隔离，绝不污染你的业务页面 CSS，也不受外部影响
-- **网络环境模拟**：一键模拟接口 **延迟 (Latency)**、**404/500 报错**，轻松测试骨架屏和错误边界
-- **双模持久化**：
+- **⚡ 双核拦截引擎**：原生支持 `fetch` 和 `XMLHttpRequest` (Ajax)，无缝兼容 Axios 等第三方库
+- **🎨 智能控制台**：内置 **CodeMirror 6** 编辑器（支持 JS 语法高亮），自适应 **深色/浅色主题**，提供优雅的 **Toast** 通知
+- **🧠 动态响应**：支持编写 JavaScript 函数，根据请求参数 (Query/Body) 动态生成响应数据，处理复杂逻辑
+- **🌐 功能全面的网络面板**：实时记录所有网络请求（Mocked 或真实请求），支持 **搜索与筛选**、**详情查看** (请求/响应体)、**单条日志删除**，以及 **"一键 Mock"** 功能（将真实请求转化为 Mock 规则）
+- **📥 配置导入**：支持从 **Postman Collections** 和 **OpenAPI 3.0** 规范直接导入 Mock 规则，自动智能生成数据
+- **🛡️ Shadow DOM 隔离**：UI 样式完全隔离，绝不污染你的业务页面 CSS，也不受外部影响
+- **🐢 网络环境模拟**：一键模拟接口 **延迟 (Latency)**、**404/500 报错**，轻松测试骨架屏和错误边界
+- **📂 双模持久化**：
   - **本地模式**：默认使用 LocalStorage，刷新不丢失
   - **服务器模式**：配合 Vite 插件，自动将规则同步保存到本地文件，实现**团队共享**
 
@@ -77,10 +73,9 @@ export default defineConfig({
 
 运行 `npm run dev`。PocketMock 会自动检测到插件环境，并切换到 **服务器模式**。
 
-## 进阶功能
+## 🛠️ 进阶功能
 
-
-### 智能 Mock 数据生成
+### 🧠 智能 Mock 数据生成
 
 PocketMock 内置了强大的 **智能 Mock 生成器**，让你可以通过简单的模板语法创建逼真的测试数据。非常适合生成复杂的 API 响应、用户资料和测试数据。
 
@@ -472,7 +467,7 @@ npm test
 
 ## 📄 开源协议
 
-MIT © [tianchang](https://github.com/tianchangNorth)
+MIT © [Your Name](https://github.com/tianchangNorth)
 
 ## 🙏 致谢
 
