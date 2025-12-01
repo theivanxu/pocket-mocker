@@ -74,6 +74,149 @@ Run `npm run dev`. PocketMock automatically detects the plugin environment and s
 
 ## 🛠️ Advanced Features
 
+### 🧠 Smart Mock Data Generation
+
+PocketMock includes a powerful **Smart Mock Generator** that allows you to create realistic test data with simple template syntax. Perfect for generating complex API responses, user profiles, and test data.
+
+#### Basic Usage
+
+```javascript
+// Static JSON with smart generators
+{
+  "users": [
+    {
+      "id": "@guid",
+      "name": "@name",
+      "email": "@email",
+      "phone": "@phone",
+      "avatar": "@image(200x200)",
+      "age": "@integer(18,65)",
+      "isActive": "@boolean",
+      "address": "@address",
+      "company": "@company"
+    }
+  ]
+}
+```
+
+#### Array Generation with Templates
+
+```javascript
+// Generate 5 users with same template
+{
+  "users|5": {
+    "id": "@guid",
+    "name": "@name",
+    "email": "@email",
+    "profile": {
+      "age": "@integer(18,80)",
+      "bio": "@text(30)",
+      "website": "@url",
+      "skills": ["@pick(JavaScript,TypeScript,React,Vue,Angular)", "@pick(Node.js,Python,Java)"]
+    }
+  }
+}
+```
+
+#### Available Generators
+
+| Generator | Description | Example | Parameters |
+|-----------|-------------|---------|------------|
+| `@guid` | UUID v4 | `"f47ac10b-58cc-4372-a567-0e02b2c3d479"` | None |
+| `@integer(min,max)` | Random integer | `42` | `1,100` (default: `0,100`) |
+| `@string(length)` | Random string | `"abc123XYZ"` | `10` (default: `10`) |
+| `@float(min,max,decimals)` | Random float | `3.14` | `0,1,2` (default: `0,1,2`) |
+| `@boolean` | Random boolean | `true` | None |
+| `@email(domains)` | Email address | `"john123@gmail.com"` | `"gmail.com,yahoo.com"` (optional) |
+| `@phone(countryCode)` | Phone number | `"+15551234567"` | `"+44"` (default: `"+1"`) |
+| `@address(countries)` | Address object | `{ street: "123 Main St", ... }` | `"US,UK,FR"` (default: `US`) |
+| `@company(industries)` | Company object | `{ name: "Tech Solutions", ... }` | `"Tech,Finance"` (optional) |
+| `@color` | Random color (hex) | `"#ff6b6b"` | None |
+| `@url(tlds)` | Random URL | `"https://example.com"` | `"com,org,dev"` (optional) |
+| `@text(wordCount)` | Random text | `"The quick brown fox..."` | `20` (default: `10`) |
+| `@date(start,end)` | Random date | `"2023-12-25"` | `"2020-01-01,2023-12-31"` |
+| `@image(widthxheight)` | Placeholder image URL | `"https://via.placeholder.com/300x200"` | `"200x200"` (default: `150x150`) |
+| `@pick(options)` | Random choice | `"apple"` | `"apple,banana,orange"` |
+| `@name` | Random name | `"John"` | None |
+
+#### Advanced Examples
+
+```javascript
+// E-commerce product response
+{
+  "products|10": {
+    "id": "@guid",
+    "name": "@pick(Laptop,Phone,Tablet,Watch,Headphones)",
+    "price": "@float(99.99,1999.99,2)",
+    "category": "@pick(Electronics,Computers,Accessories)",
+    "inStock": "@boolean",
+    "rating": "@float(1,5,1)",
+    "images": ["@image(400x300)", "@image(400x300)"],
+    "description": "@text(50)",
+    "specs": {
+      "color": "@pick(Black,Silver,White,Blue,Red)",
+      "weight": "@integer(100,2000)",
+      "warranty": "@integer(1,3)"
+    }
+  }
+}
+
+// User profile with nested data
+{
+  "user": {
+    "id": "@guid",
+    "personal": {
+      "name": "@name",
+      "email": "@email(custom.com,company.org)",
+      "phone": "@phone",
+      "birthDate": "@date(1990-01-01,2005-12-31)",
+      "avatar": "@image(150x150)"
+    },
+    "location": "@address(US,CA)",
+    "company": "@company(Technology,Software,Finance)",
+    "preferences": {
+      "theme": "@pick(light,dark)",
+      "language": "@pick(en,es,fr,de,zh)",
+      "notifications": "@boolean"
+    },
+    "lastLogin": "@date(2023-01-01,2023-12-31)"
+  }
+}
+```
+
+#### Combining with Dynamic Responses
+
+You can use smart generators within function responses for even more power:
+
+```javascript
+(req) => {
+  const userId = req.query.id;
+
+  if (userId === 'admin') {
+    return {
+      id: "@guid",
+      name: "Admin User",
+      role: "administrator",
+      email: "@email(admin.com)",
+      permissions: ["read", "write", "delete"],
+      lastActive: "@date(2023-01-01,2023-12-31)"
+    };
+  }
+
+  return {
+    "users|10": {
+      id: "@guid",
+      name: "@name",
+      email: "@email",
+      profile: {
+        avatar: "@image(100x100)",
+        bio: "@text(20)"
+      }
+    }
+  };
+}
+```
+
 ### Dynamic Response (Function Mock)
 
 You are not limited to static JSON. You can write JavaScript functions to generate responses dynamically based on the request!

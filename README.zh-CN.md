@@ -73,6 +73,149 @@ export default defineConfig({
 
 ## 🛠️ 进阶功能
 
+### 🧠 智能 Mock 数据生成
+
+PocketMock 内置了强大的 **智能 Mock 生成器**，让你可以通过简单的模板语法创建逼真的测试数据。非常适合生成复杂的 API 响应、用户资料和测试数据。
+
+#### 基础用法
+
+```javascript
+// 静态 JSON 配合智能生成器
+{
+  "users": [
+    {
+      "id": "@guid",
+      "name": "@name",
+      "email": "@email",
+      "phone": "@phone",
+      "avatar": "@image(200x200)",
+      "age": "@integer(18,65)",
+      "isActive": "@boolean",
+      "address": "@address",
+      "company": "@company"
+    }
+  ]
+}
+```
+
+#### 数组生成与模板
+
+```javascript
+// 生成 5 个相同模板的用户
+{
+  "users|5": {
+    "id": "@guid",
+    "name": "@name",
+    "email": "@email",
+    "profile": {
+      "age": "@integer(18,80)",
+      "bio": "@text(30)",
+      "website": "@url",
+      "skills": ["@pick(JavaScript,TypeScript,React,Vue,Angular)", "@pick(Node.js,Python,Java)"]
+    }
+  }
+}
+```
+
+#### 可用生成器
+
+| 生成器 | 描述 | 示例 | 参数 |
+|-----------|-------------|---------|------------|
+| `@guid` | UUID v4 | `"f47ac10b-58cc-4372-a567-0e02b2c3d479"` | 无 |
+| `@integer(min,max)` | 随机整数 | `42` | `1,100` (默认: `0,100`) |
+| `@string(length)` | 随机字符串 | `"abc123XYZ"` | `10` (默认: `10`) |
+| `@float(min,max,decimals)` | 随机浮点数 | `3.14` | `0,1,2` (默认: `0,1,2`) |
+| `@boolean` | 随机布尔值 | `true` | 无 |
+| `@email(domains)` | 邮箱地址 | `"john123@gmail.com"` | `"gmail.com,yahoo.com"` (可选) |
+| `@phone(countryCode)` | 电话号码 | `"+15551234567"` | `"+44"` (默认: `"+1"`) |
+| `@address(countries)` | 地址对象 | `{ street: "123 Main St", ... }` | `"US,UK,FR"` (默认: `US`) |
+| `@company(industries)` | 公司对象 | `{ name: "科技解决方案", ... }` | `"科技,金融"` (可选) |
+| `@color` | 随机颜色 (十六进制) | `"#ff6b6b"` | 无 |
+| `@url(tlds)` | 随机 URL | `"https://example.com"` | `"com,org,dev"` (可选) |
+| `@text(wordCount)` | 随机文本 | `"敏捷的棕狐狸..."` | `20` (默认: `10`) |
+| `@date(start,end)` | 随机日期 | `"2023-12-25"` | `"2020-01-01,2023-12-31"` |
+| `@image(widthxheight)` | 占位图 URL | `"https://via.placeholder.com/300x200"` | `"200x200"` (默认: `150x150`) |
+| `@pick(options)` | 随机选择 | `"苹果"` | `"苹果,香蕉,橙子"` |
+| `@name` | 随机姓名 | `"张三"` | 无 |
+
+#### 高级示例
+
+```javascript
+// 电商产品响应
+{
+  "products|10": {
+    "id": "@guid",
+    "name": "@pick(笔记本电脑,手机,平板,手表,耳机)",
+    "price": "@float(99.99,1999.99,2)",
+    "category": "@pick(电子产品,计算机,配件)",
+    "inStock": "@boolean",
+    "rating": "@float(1,5,1)",
+    "images": ["@image(400x300)", "@image(400x300)"],
+    "description": "@text(50)",
+    "specs": {
+      "color": "@pick(黑色,银色,白色,蓝色,红色)",
+      "weight": "@integer(100,2000)",
+      "warranty": "@integer(1,3)"
+    }
+  }
+}
+
+// 包含嵌套数据的用户资料
+{
+  "user": {
+    "id": "@guid",
+    "personal": {
+      "name": "@name",
+      "email": "@email(custom.com,company.org)",
+      "phone": "@phone",
+      "birthDate": "@date(1990-01-01,2005-12-31)",
+      "avatar": "@image(150x150)"
+    },
+    "location": "@address(美国,加拿大)",
+    "company": "@company(科技,软件,金融)",
+    "preferences": {
+      "theme": "@pick(浅色,深色)",
+      "language": "@pick(中文,英语,法语,德语)",
+      "notifications": "@boolean"
+    },
+    "lastLogin": "@date(2023-01-01,2023-12-31)"
+  }
+}
+```
+
+#### 结合动态响应使用
+
+你可以在函数响应中使用智能生成器，获得更强大的功能：
+
+```javascript
+(req) => {
+  const userId = req.query.id;
+
+  if (userId === 'admin') {
+    return {
+      id: "@guid",
+      name: "管理员用户",
+      role: "administrator",
+      email: "@email(admin.com)",
+      permissions: ["读取", "写入", "删除"],
+      lastActive: "@date(2023-01-01,2023-12-31)"
+    };
+  }
+
+  return {
+    "users|10": {
+      id: "@guid",
+      name: "@name",
+      email: "@email",
+      profile: {
+        avatar: "@image(100x100)",
+        bio: "@text(20)"
+      }
+    }
+  };
+}
+```
+
 ### 动态响应 (Dynamic Response)
 
 不再局限于静态 JSON！你可以编写 JavaScript 函数来根据请求动态生成响应。
