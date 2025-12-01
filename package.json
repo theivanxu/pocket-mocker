@@ -1,8 +1,31 @@
 {
-  "name": "pocket-mock",
+  "name": "pocket-mocker",
+  "description": "Visual in-browser HTTP mocking tool for modern frontend development",
   "private": false,
   "version": "1.0.0",
   "type": "module",
+  "keywords": [
+    "mock",
+    "api",
+    "http",
+    "intercept",
+    "development",
+    "debug",
+    "frontend",
+    "testing",
+    "postman",
+    "openapi"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "homepage": "https://github.com/tianchangNorth/pocket-mock#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tianchangNorth/pocket-mock.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tianchangNorth/pocket-mock/issues"
+  },
   "files": [
     "dist",
     "plugin"

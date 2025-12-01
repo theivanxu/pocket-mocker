@@ -3,7 +3,7 @@
 > **所见即所得的浏览器端可视化 HTTP 调试台。**
 > 一款轻量级、可视化的浏览器内 HTTP Mock 工具，专为现代前端开发而设计。
 
-[![npm 版本](https://badge.fury.io/js/pocket-mock.svg)](https://badge.fury.io/js/pocket-mock)
+[![npm 版本](https://badge.fury.io/js/pocket-mocker.svg)](https://badge.fury.io/js/pocket-mocker)
 [![开源协议: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
 
 [English](README.md) | **中文**
@@ -25,11 +25,11 @@
 
 ## 📦 安装
 ```bash
-npm install pocket-mock --save-dev
+npm install pocket-mocker --save-dev
 # 或者
-yarn add pocket-mock -D
+yarn add pocket-mocker -D
 # 或者
-pnpm add pocket-mock -D
+pnpm add pocket-mocker -D
 ```
 
 ## 🚀 快速开始
@@ -39,7 +39,7 @@ pnpm add pocket-mock -D
 适合个人开发或快速尝试。直接在项目的入口文件（如 `src/main.ts` 或 `src/index.js`）中引入并启动：
 
 ```javascript
-import { pocketMock } from 'pocket-mock';
+import { pocketMock } from 'pocket-mocker';
 
 // 仅在开发环境下启动
 if (process.env.NODE_ENV === 'development') {
@@ -57,7 +57,7 @@ if (process.env.NODE_ENV === 'development') {
 
 ```typescript
 import { defineConfig } from 'vite';
-import pocketMockPlugin from 'pocket-mock/vite-plugin';
+import pocketMockPlugin from 'pocket-mocker/vite-plugin';
 
 export default defineConfig({
   plugins: [
@@ -418,7 +418,7 @@ PocketMock 采用渐进式架构：
 ### 自定义集成
 
 ```javascript
-import { pocketMock } from 'pocket-mock';
+import { pocketMock } from 'pocket-mocker';
 
 pocketMock({
   enable: true // 可选的显式启用标志
@@ -430,7 +430,7 @@ pocketMock({
 完整的 TypeScript 支持：
 
 ```typescript
-import { pocketMock, MockRule } from 'pocket-mock';
+import type { pocketMock, MockRule } from 'pocket-mocker';
 
 // 类型自动可用
 const rule: MockRule = {

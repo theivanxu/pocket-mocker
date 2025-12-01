@@ -4,7 +4,7 @@
 >
 > A lightweight, visual debugging tool that intercepts and modifies HTTP requests directly in your browser.
 
-[![npm version](https://badge.fury.io/js/pocket-mock.svg)](https://badge.fury.io/js/pocket-mock)
+[![npm version](https://badge.fury.io/js/pocket-mocker.svg)](https://badge.fury.io/js/pocket-mocker)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 **English** | [中文](README.zh-CN.md)
 
@@ -28,11 +28,11 @@
 
 ## 📦 Installation
 ```bash
-npm install pocket-mock --save-dev
+npm install pocket-mocker --save-dev
 # or
-yarn add pocket-mock -D
+yarn add pocket-mocker -D
 # or
-pnpm add pocket-mock -D
+pnpm add pocket-mocker -D
 ```
 
 ## 🚀 Quick Start
@@ -42,7 +42,7 @@ pnpm add pocket-mock -D
 Perfect for individual development or quick experimentation. Simply import and start in your project's entry file:
 
 ```javascript
-import { pocketMock } from 'pocket-mock';
+import { pocketMock } from 'pocket-mocker';
 
 // Only start in development environment
 if (process.env.NODE_ENV === 'development') {
@@ -60,7 +60,7 @@ Ideal for production-level projects. The Vite plugin integrates with the file sy
 
 ```typescript
 import { defineConfig } => 'vite';
-import pocketMockPlugin from 'pocket-mock/vite-plugin';
+import pocketMockPlugin from 'pocket-mocker/vite-plugin';
 
 export default defineConfig({
   plugins: [
@@ -422,7 +422,7 @@ This ensures compatibility with Webpack, RSPack, or even pure HTML projects.
 ### Custom Integration
 
 ```javascript
-import { pocketMock } from 'pocket-mock';
+import { pocketMock } from 'pocket-mocker';
 
 pocketMock({
   enable: true // Optional explicit enable flag
@@ -434,7 +434,7 @@ pocketMock({
 Full TypeScript support included:
 
 ```typescript
-import { pocketMock, MockRule } from 'pocket-mock';
+import type { pocketMock, MockRule } from 'pocket-mocker';
 
 // Types are automatically available
 const rule: MockRule = {
