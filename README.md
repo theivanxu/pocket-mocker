@@ -1,4 +1,4 @@
-# 🛠️ PocketMock
+# Pocket-Mocker
 
 > **Visual in-browser HTTP mocking tool for modern frontend development.**
 >
@@ -9,10 +9,10 @@
 
 **English** | [中文](README.zh-CN.md)
 
-![PocketMock Demo](docs/pocket.webp)
+![PocketMocker Demo](docs/pocket.webp)
 
 
-**PocketMock** is a zero-intrusion frontend Mock tool. Unlike Postman or traditional `mock.js`, it embeds directly **into your page**, allowing you to intercept `fetch` and `XMLHttpRequest` in real-time during development, dynamically modify response data, simulate network latency, and test error status codes.
+**PocketMocker** is a zero-intrusion frontend Mock tool. Unlike Postman or traditional `mock.js`, it embeds directly **into your page**, allowing you to intercept `fetch` and `XMLHttpRequest` in real-time during development, dynamically modify response data, simulate network latency, and test error status codes.
 
 ## ✨ Features
 
