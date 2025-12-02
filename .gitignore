@@ -25,3 +25,4 @@ dist-ssr
 *.tgz
 demo/*
 pocket-mock.json
+demo-dist/*

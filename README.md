@@ -1,8 +1,10 @@
-# Pocket-Mocker
+# PocketMocker
 
 > **Visual in-browser HTTP mocking tool for modern frontend development.**
 >
 > A lightweight, visual debugging tool that intercepts and modifies HTTP requests directly in your browser.
+
+**🚀 Live Demo:** [https://tianchangnorth.github.io/pocket-mocker/](https://tianchangnorth.github.io/pocket-mocker/)
 
 [![npm version](https://badge.fury.io/js/pocket-mocker.svg)](https://badge.fury.io/js/pocket-mocker)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT). 

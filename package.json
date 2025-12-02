@@ -50,7 +50,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
-    "test": "vitest"
+    "test": "vitest",
+    "build:demo": "vite build -c vite.demo.config.ts",
+    "deploy:demo": "npm run build:demo && gh-pages -d demo-dist"
   },
   "devDependencies": {
     "@codemirror/commands": "^6.10.0",
@@ -62,6 +64,7 @@
     "@types/node": "^24.10.1",
     "codemirror": "^6.0.2",
     "esbuild": "^0.25.12",
+    "gh-pages": "^6.3.0",
     "svelte": "^4.2.12",
     "svelte-check": "^4.3.4",
     "typescript": "~5.9.3",
