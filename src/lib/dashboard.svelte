@@ -832,15 +832,13 @@
     border-bottom-color: var(--pm-primary);
   }
 
-  /* Content */
   .content {
     padding: 16px;
     overflow-y: auto;
     flex: 1;
-    background: var(--pm-bg-secondary); /* Main content area bg */
+    background: var(--pm-bg-secondary); 
   }
 
-  /* Add Panel */
   .add-panel {
     background: var(--pm-bg-tertiary);
     padding: 12px;
@@ -861,7 +859,6 @@
     gap: 8px;
   }
 
-  /* Empty State */
   .empty-state {
     text-align: center;
     padding: 40px 20px;
@@ -880,9 +877,8 @@
     opacity: 0.8;
   }
 
-  /* Card */
   .card {
-    background: var(--pm-bg); /* Card stands out from secondary bg */
+    background: var(--pm-bg);
     border-radius: 8px;
     margin-bottom: 12px;
     border: 1px solid var(--pm-border);
@@ -1036,7 +1032,6 @@
     transform: translateX(0);
   }
 
-  /* Badges */
   .badge {
     padding: 2px 6px;
     border-radius: 4px;
@@ -1048,9 +1043,7 @@
   .method.POST { background: rgba(5, 150, 105, 0.15); color: #10b981; }
   .method.PUT { background: rgba(217, 119, 6, 0.15); color: #f59e0b; }
   .method.DELETE { background: rgba(220, 38, 38, 0.15); color: #ef4444; }
-  /* Adjust method colors for light mode visibility if needed, or stick to generic accessible colors */
 
-  /* Logs & Network */
   .network-toolbar {
     display: flex;
     gap: 8px;
@@ -1190,7 +1183,6 @@
     margin: 0;
   }
 
-  /* Editing Mode Styles */
   .container.editing-mode {
     width: 800px;
     height: 80vh;
@@ -1276,7 +1268,7 @@
   .editor-panel .editor-content {
     flex: 1;
     min-height: 0;
-    overflow-y: hidden; /* Let JsonEditor scroll, or config scroll */
+    overflow-y: hidden; 
     display: flex;
     flex-direction: column;
     padding: 0;
@@ -1294,7 +1286,6 @@
     padding: 12px 16px;
   }
 
-  /* Override JsonEditor borders when in full panel */
   .editor-panel :global(.json-editor-container) {
     border-left: none;
     border-right: none;

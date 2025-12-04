@@ -17,7 +17,6 @@ export const updateRules = (newRules: MockRule[]) => {
   rules.set(newRules);
 };
 
-// === Initialization logic ===
 export const initStore = async () => {
   try {
     isServerMode = false;

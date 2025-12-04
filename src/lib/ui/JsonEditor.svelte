@@ -14,7 +14,6 @@
 
   const dispatch = createEventDispatcher();
 
-  // Reactive initialization: wait for container to exist and be visible
   $: if (editorContainer && !initialized && !editorView) {
     tick().then(() => {
       initializeEditor();
@@ -24,13 +23,11 @@
   function initializeEditor() {
     if (!editorContainer || initialized || editorView) return;
 
-    // Check if container has size - critical for CM in Shadow DOM
     if (editorContainer.offsetWidth === 0 && editorContainer.offsetHeight === 0) {
-       return; // Wait for next tick/update
+       return; 
     }
 
     const root = editorContainer.getRootNode();
-    // Check for system dark mode preference
     const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     try {
@@ -39,7 +36,7 @@
         extensions: [
           basicSetup,
           javascript(),
-          isDark ? oneDark : [], // Conditionally apply Dark Theme
+          isDark ? oneDark : [],
           EditorView.lineWrapping,
           EditorView.theme({
             "&": { height: "100%", fontSize: "13px" }
@@ -60,8 +57,8 @@
 
       initialized = true;
 
-    } catch (e) {
-      // console.error('[JsonEditor] Failed to initialize:', e); // Remove log
+    } catch (e:any) {
+      throw new Error(e?.message ?? 'has an unkonw error')
     }
   }
 
@@ -72,7 +69,6 @@
     }
   });
 
-  // Handle value changes
   $: if (initialized && editorView && value !== editorView.state.doc.toString()) {
     editorView.dispatch({
       changes: {
@@ -83,7 +79,6 @@
     });
   }
   
-  // Watch for visibility changes (e.g. tab switch)
   $: if (!initialized && editorContainer && editorContainer.offsetHeight > 0) {
      initializeEditor();
   }
@@ -97,20 +92,18 @@
     min-height: 200px;
     border: 1px solid var(--pm-border);
     border-radius: 4px;
-    background-color: var(--pm-input-bg); /* Match container background with input field */
-    overflow: hidden; /* Prevent double scrollbars, let CM handle it */
+    background-color: var(--pm-input-bg);
+    overflow: hidden;
     position: relative;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
-  /* Focus state for container - more stable approach */
   .json-editor-container:focus-within {
     border-color: var(--pm-primary, #666);
     outline: none;
     box-shadow: 0 0 0 1px var(--pm-primary, #666);
   }
 
-  /* Custom scrollbar styles for CodeMirror */
   :global(.cm-scroller::-webkit-scrollbar) {
     width: 8px;
     height: 8px;
@@ -122,7 +115,7 @@
   :global(.cm-scroller::-webkit-scrollbar-thumb) {
     background: var(--pm-text-secondary);
     border-radius: 4px;
-    border: none; /* Removed border to prevent double border with track */
+    border: none; 
   }
   :global(.cm-scroller::-webkit-scrollbar-thumb:hover) {
     background: var(--pm-text-primary);
