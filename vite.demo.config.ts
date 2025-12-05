@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { resolve } from 'path';
+import { fileURLToPath } from 'node:url'
 
 export default defineConfig({
   base: './',
@@ -9,8 +10,9 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      'pocket-mocker': resolve(__dirname, './src/index.ts')
-    }
+      'pocket-mocker': resolve(__dirname, './src/index.ts'),
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
   },
   build: {
     outDir: 'demo-dist',
