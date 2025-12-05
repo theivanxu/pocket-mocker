@@ -9,9 +9,9 @@
 [![npm version](https://badge.fury.io/js/pocket-mocker.svg)](https://badge.fury.io/js/pocket-mocker)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT). 
 
-**English** | [中文文档](README.zh-CN.md)
+**English** | [中文文档](docs/README.zh-CN.md)
 
-![PocketMocker Demo](docs/pocket.webp)
+![PocketMocker Demo](public/pocket.webp)
 
 
 **PocketMocker** is a zero-intrusion frontend Mock tool. Unlike Postman or traditional `mock.js`, it embeds directly **into your page**, allowing you to intercept `fetch` and `XMLHttpRequest` in real-time during development, dynamically modify response data, simulate network latency, and test error status codes.
@@ -43,7 +43,7 @@ pnpm add pocket-mocker -D
 
 ### Method 1: Zero Configuration (Local Mode)
 
-Perfect for individual development or quick experimentation. Simply import and start in your project's entry file:
+Perfect for individual development or quick experimentation. Simply import and start in your project's entry file(save in local storage):
 
 ```javascript
 import { pocketMock } from 'pocket-mocker';
@@ -65,7 +65,6 @@ Ideal for production-level projects. The Vite plugin integrates with the file sy
 ```javascript
 import { pocketMock } from 'pocket-mocker';
 
-// Only start in development environment
 if (process.env.NODE_ENV === 'development') {
   pocketMock();
 }
@@ -466,26 +465,24 @@ const rule: MockRule = {
 
 ## Contributing
 
-Local development setup:
 
-```bash
-git clone https://github.com/tianchangNorth/pocket-mocker.git
-cd pocket-mocker
-npm install
 
-# Start development server
-npm run dev
+We welcome all contributions to PocketMocker! Whether it's reporting bugs, suggesting new features, improving documentation, or submitting code, your help is greatly appreciated.
 
-# Build distribution package
-npm run build
 
-# Run tests
-npm test
-```
+
+Please read our [Contribution Guidelines](CONTRIBUTING.md) for details on how to get started.
+
+
 
 ## 📄 License
 
+
+
 MIT © [tianchangNorth](https://github.com/tianchangNorth)
+
 ---
 
-**Happy Mocking! **
+
+
+**Happy Mocking!**
