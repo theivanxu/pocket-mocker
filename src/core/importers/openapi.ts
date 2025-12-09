@@ -101,7 +101,7 @@ function generateMockFromSchema(schema: OpenAPISchema, schemas: Record<string, O
           continue;
         }
         if (lowerKey.includes('name')) {
-          result[key] = '@cname';
+          result[key] = '@name';
           continue;
         }
         if (lowerKey.includes('avatar') || lowerKey.includes('image')) {

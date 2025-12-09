@@ -102,7 +102,6 @@ export function patchXHR() {
                 total: responseData.length
               }));
               if (this.onreadystatechange) {
-                // @ts-ignore
                 this.onreadystatechange(new Event('readystatechange'));
               }
             }, 1);
