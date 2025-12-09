@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.1.1 - 2025-12-05
+
+### Improvements
+
+- **Build Process**: Optimized NPM package size by preventing unnecessary static assets from being bundled, significantly reducing package footprint.
+
 ## v1.1.0 - 2025-12-05
 
 ### Refactor
