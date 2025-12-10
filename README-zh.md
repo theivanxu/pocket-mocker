@@ -26,7 +26,7 @@
 - [技术原理](#技术原理)
 - [贡献](#贡献)
 
-<video src="https://github.com/user-attachments/assets/e7501191-7ef1-4bd4-bd21-6500585fe4ad" controls width="500"></video>
+<video src="https://github.com/user-attachments/assets/e7501191-7ef1-4bd4-bd21-6500585fe4ad" controls width="800"></video>
 
 **PocketMocker** 是一款零侵入的前端 Mock 工具。与 Postman 或传统的 `mock.js` 不同，它直接**嵌入在你的页面中**，让你在开发时可以实时拦截 `fetch` and `XMLHttpRequest`，动态修改响应数据、模拟网络延迟和异常状态码。
 
@@ -190,7 +190,7 @@ PocketMock 内置强大的生成器，使用简单语法即可生成逼真的测
 
 ## 项目路线图
 
-查阅我们的 [项目路线图](ROADMAP.zh-CN.md) 了解 PocketMocker 的未来规划，以及您如何参与进来，共同构建项目的未来！
+查阅我们的 [项目路线图](docs/ROADMAP.zh-CN.md) 了解 PocketMocker 的未来规划，以及您如何参与进来，共同构建项目的未来！
 
 ## 技术原理
 
@@ -202,7 +202,7 @@ PocketMock 内置强大的生成器，使用简单语法即可生成逼真的测
 
 我们非常欢迎所有对 PocketMocker 的贡献！无论是报告 Bug、提出新功能建议、改进文档还是提交代码，您的帮助都将使 PocketMocker 变得更好。
 
-请阅读我们的 [贡献指南](CONTRIBUTING.zh-CN.md) 了解如何参与项目。
+请阅读我们的 [贡献指南](docs/CONTRIBUTING.zh-CN.md) 了解如何参与项目。
 
 ## 📄 开源协议
 
