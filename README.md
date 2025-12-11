@@ -1,5 +1,7 @@
 # PocketMocker
 
+[![npm version](https://badge.fury.io/js/pocket-mocker.svg)](https://badge.fury.io/js/pocket-mocker)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT). 
 > **Visual in-browser HTTP mocking tool for modern frontend development.**
 >
 > A lightweight, visual debugging tool that intercepts and modifies HTTP requests directly in your browser.
@@ -8,10 +10,6 @@
 
 Have questions or ideas?  
 Please open an [Issue](https://github.com/tianchangNorth/pocket-mocker/issues) or start a [Discussion](https://github.com/tianchangnorth/pocket-mocker/discussions) — all levels of feedback are welcome!
-
-[![npm version](https://badge.fury.io/js/pocket-mocker.svg)](https://badge.fury.io/js/pocket-mocker)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT). 
-
 
 
 **English** | [中文文档](docs/README.zh-CN.md)
