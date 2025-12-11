@@ -1,48 +1,41 @@
 # PocketMocker Roadmap
 
-This document outlines the development plan for PocketMocker. Our goal is to evolve from a lightweight tool into a comprehensive, enterprise-ready API mocking platform.
+This document outlines the development plan for PocketMocker. Our goal is to keep the tool lightweight and efficient while solving core pain points in real-world development scenarios.
 
 > **Note:** This roadmap is subject to change based on community feedback and priorities.
 
 ## Phase 1: Core Experience Enhancements (v1.2.0)
+*Focus: Solving rule management pain points and improving daily efficiency.*
 
 - [ ] **Rule Grouping & Environment Management**
-    - Introduce "Groups" or folders to organize rules.
-    - Add "Environment" switching (e.g., Dev, Staging, Error-Test) to toggle sets of rules instantly.
-- [ ] **GraphQL Support**
-    - Implement `operationName` based matching in `matcher.ts`.
-    - Add GraphQL-specific UI in the Rule Editor.
-    - Adapt Smart Mock generator for GraphQL response structures (`data`/`errors`).
+    - Introduce "Groups" or folders to organize rules, solving the mess when rule count grows.
+    - Add "Environment" switching (e.g., Dev, Staging, Error-Test) to toggle entire sets of rules instantly.
+- [ ] **Easy Config Sharing**
+    - Implement "Copy All Config" functionality, allowing Local Mode users to quickly share rules with colleagues or backup to clipboard.
 - [ ] **UX Improvements**
-    - [ ] Add "Copy to Clipboard" buttons.
+    - [ ] Add "Copy to Clipboard" buttons (for response bodies).
     - [ ] Support "Clone Rule" functionality.
     - [ ] Draggable sorting for rules.
 
-## Phase 2: Ecosystem & Connectivity (v1.3.0)
+## Phase 2: Modernization & Differentiation (v1.3.0)
+*Focus: Adapting to modern app architectures and providing unique debugging capabilities.*
 
-- [ ] **Advanced Import/Export**
-    - Export current rules to JSON.
-    - Import HAR (HTTP Archive) files from browser network tab.
-    - Export rules as Node.js code (e.g., for MSW or unit tests).
 - [ ] **Response Streaming Simulation**
-    - Support chunked response mocking with configurable delays.
-    - Essential for testing AI/LLM applications (Server-Sent Events).
+    - Support simulated chunked response data with configurable delays per chunk.
+    - **Core Use Case**: Perfectly suited for testing AI/LLM chat applications (ChatGPT-like).
+- [ ] **GraphQL Support**
+    - Implement matching based on `operationName` in `matcher.ts`, breaking the limitation of URL-only matching.
+    - Add GraphQL-specific UI in the Rule Editor.
+
+## Phase 3: Personalization (v2.0.0)
+*Focus: Enhancing visual experience.*
+
 - [ ] **Theming System**
     - Introduce CSS variables for full theming support.
-
-## Phase 3: Architecture & Full-Stack (v2.0.0)
-
-- [ ] **WebSocket Mocking**
-    - Intercept `WebSocket` constructor.
-    - Rule-based message matching (send A -> reply B).
-    - Simulate server-initiated push messages.
-- [ ] **Service Worker Mode**
-    - Optional interception mode using Service Workers (similar to MSW).
-    - Provides cleaner isolation and better compatibility with some libraries.
-- [ ] **Headless Mode**
-    - Allow running PocketMocker rules in Node.js environments (Jest/Vitest) for API testing.
+    - Enable custom theme capabilities.
 
 ## Contributing
 
 We welcome contributions to any of these items!
+- Check out [GOOD_FIRST_ISSUES.md](https://github.com/tianchangNorth/pocket-mocker/issues) for beginner-friendly tasks.
 - Read [CONTRIBUTING.md](./CONTRIBUTING.md) to get started.
