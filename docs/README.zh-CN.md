@@ -1,58 +1,72 @@
+<div align="center">
+
 # PocketMocker
 
-[![npm 版本](https://badge.fury.io/js/pocket-mocker.svg)](https://badge.fury.io/js/pocket-mocker)
-[![开源协议: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<p>
+  <a href="https://www.npmjs.com/package/pocket-mocker" target="_blank">
+    <img src="https://img.shields.io/npm/v/pocket-mocker?style=for-the-badge&logo=npm" alt="NPM 版本" />
+  </a>
+  <a href="https://github.com/tianchangNorth/pocket-mocker/blob/main/LICENSE" target="_blank">
+    <img src="https://img.shields.io/github/license/tianchangNorth/pocket-mocker?style=for-the-badge&color=blue" alt="开源协议" />
+  </a>
+  <a href="https://github.com/tianchangNorth/pocket-mocker/actions/workflows/ci.yml" target="_blank">
+    <img src="https://img.shields.io/github/actions/workflow/status/tianchangNorth/pocket-mocker/ci.yml?branch=main&style=for-the-badge&logo=github" alt="CI 状态" />
+  </a>
+</p>
 
-> **所见即所得的浏览器端可视化 HTTP 调试工具。**
->
-> 一款轻量级、可视化的浏览器内 HTTP Mock 工具，专为现代前端开发而设计。
+<p>
+  <a href="https://tianchangnorth.github.io/pocket-mocker/" target="_blank">
+    <strong>🚀 在线演示</strong>
+  </a>
+  ·
+  <a href="#安装">安装</a>
+  ·
+  <a href="#快速开始">快速开始</a>
+  ·
+  <a href="#贡献与联系">贡献与联系</a>
+  ·
+  <a href="https://github.com/tianchangNorth/pocket-mocker/discussions">讨论</a>
+</p>
 
-**在线演示:** [https://tianchangnorth.github.io/pocket-mocker/](https://tianchangnorth.github.io/pocket-mocker/)
+<p>
+  <a href="../README.md">English</a> · <strong>中文</strong>
+</p>
 
-[English](../README.md) | **中文文档**
+</div>
 
-## 目录
+---
 
-- [核心特性](#-核心特性)
-- [工具对比](#-工具对比)
-- [安装](#安装)
-- [快速开始](#快速开始)
-- [进阶功能](#进阶功能)
-  - [智能 Mock 数据生成](#智能-mock-数据生成)
-  - [配置导入](#-配置导入)
-  - [动态响应](#动态响应-dynamic-response)
-  - [网络面板](#功能全面的网络面板)
-- [项目路线图](#项目路线图)
-- [技术原理](#技术原理)
-- [贡献与联系](#贡献与联系)
+## PocketMocker 是什么？
+
+**PocketMocker** 是一款零侵入、可视化的 HTTP Mock 工具，直接在**你的浏览器中运行**。与 Postman 或传统的 Mock.js 不同，它将强大的调试面板嵌入到你的页面中，让你在开发时实时拦截和修改 HTTP 请求。
+
+**完美适用于**：
+- 实时拦截 `fetch` 和 `XMLHttpRequest`
+- 可视化编辑 Mock 响应
+- 实时网络监控
+- 测试错误状态和网络延迟
+- 团队协作，共享配置
+
 
 https://github.com/user-attachments/assets/e7501191-7ef1-4bd4-bd21-6500585fe4ad.mp4
 
-**PocketMocker** 是一款零侵入的前端 Mock 工具。与 Postman 或传统的 `mock.js` 不同，它直接**嵌入在你的页面中**，让你在开发时可以实时拦截 `fetch` and `XMLHttpRequest`，动态修改响应数据、模拟网络延迟和异常状态码。
+---
 
-## ✨ 核心特性
-
-- **双核拦截引擎**：原生支持 `fetch` 和 `XMLHttpRequest` (Ajax)，无缝兼容 Axios 等第三方库
-- **可视化控制台**：内置 **CodeMirror 6** 编辑器，支持 JS 语法高亮、深色/浅色主题适配
-- **动态响应**：支持编写 JavaScript 函数，根据请求参数 (Query/Body) 动态生成响应数据
-- **网络面板**：实时记录所有请求，支持 **搜索**、**详情查看**，以及 **"一键 Mock"**（将真实请求转化为 Mock 规则）
-- **配置导入**：支持从 **Postman Collections** 和 **OpenAPI 3.0** 直接导入，并自动生成智能数据
-- **Shadow DOM 隔离**：UI 样式完全隔离，绝不污染你的业务页面
-- **网络环境模拟**：一键模拟接口 **延迟 (Latency)**、**404/500 报错**
-- **双模持久化**：支持 LocalStorage 本地存储和基于 Vite 插件的文件系统同步
-
-## 工具对比
+## 为什么选择 PocketMocker？
 
 | 特性 | PocketMocker | Mock.js | Postman | MSW |
-| :--- | :---: | :---: | :---: | :---: |
+|:---|:---:|:---:|:---:|:---:|
 | **浏览器集成** | ✅ (页面内 UI) | ✅ | ❌ (独立 App) | ✅ (无 UI) |
 | **可视化编辑** | ✅ | ❌ | ✅ | ❌ |
 | **网络日志记录** | ✅ | ❌ | ✅ | ❌ |
-| **实时开关/修改** | ✅ | ❌ | ❌ | ❌ |
+| **实时开关** | ✅ | ❌ | ❌ | ❌ |
 | **智能数据生成** | ✅ | ✅ | ❌ | ❌ |
 | **配置导入** | ✅ (Postman/OA3) | ❌ | ✅ | ❌ |
 
+---
+
 ## 安装
+
 ```bash
 npm install pocket-mocker --save-dev
 # 或者
@@ -61,15 +75,18 @@ yarn add pocket-mocker -D
 pnpm add pocket-mocker -D
 ```
 
+---
+
 ## 快速开始
 
 ### 方式一：零配置使用（本地模式）
 
-适合个人开发或快速尝试。直接在项目的入口文件（如 `src/main.ts`）中引入并启动(配置存储在local storage中)：
+适合个人开发或快速尝试。直接在项目的入口文件中引入并启动：
 
 ```javascript
 import { pocketMock } from 'pocket-mocker';
 
+// 仅在开发环境中启动
 if (process.env.NODE_ENV === 'development') {
   pocketMock();
 }
@@ -79,9 +96,10 @@ if (process.env.NODE_ENV === 'development') {
 
 ### 方式二：团队协作模式（Vite 插件）🔥 推荐
 
-适合生产级项目。通过 Vite 插件打通文件系统，将 Mock 规则保存为配置文件，方便 Git 共享。
+适合生产级项目。通过 Vite 插件打通文件系统，将 Mock 规则保存为配置文件，方便团队共享。
 
 **1. 在入口文件引入**
+
 ```javascript
 import { pocketMock } from 'pocket-mocker';
 
@@ -107,24 +125,54 @@ export default defineConfig({
 
 运行 `npm run dev`。PocketMock 会自动检测插件环境并切换到 **服务器模式**。
 
+---
+
 ## 进阶功能
 
 ### 智能 Mock 数据生成
 
-PocketMock 内置强大的生成器，使用简单语法即可生成逼真的测试数据。
+PocketMock 内置强大的 **智能 Mock 生成器**，使用简单语法即可生成逼真的测试数据。
 
-#### 常用生成器速查
+#### 速查表
 
 | 语法 | 描述 | 示例 |
 |:---|:---|:---|
+| **基础类型** |
 | `@guid` | UUID | `"f47ac-..."` |
-| `@name` | 姓名 | `"John"` |
-| `@email` | 邮箱 | `"user@example.com"` |
-| `@image(200x200)` | 图片 URL | `"https://via..."` |
-| `@date` | 日期 | `"2023-12-25"` |
-| `@integer(1,100)` | 整数 | `42` |
-| `@boolean` | 布尔值 | `true` |
-| `@pick(A,B,C)` | 随机选择 | `"B"` |
+| `@integer(min,max)` | 随机整数 | `@integer(1,100)` → `42` |
+| `@float(min,max,decimals)` | 随机浮点数 | `@float(0,1,2)` → `0.57` |
+| `@boolean` | 随机布尔值 | `true` |
+| `@string(length)` | 随机字符串 | `@string(8)` → `"aX9bK2pQ"` |
+| **个人信息** |
+| `@name` | 随机姓名 | `"张三"` |
+| `@email(domains)` | 随机邮箱 | `@email(gmail.com,yahoo.com)` |
+| `@phone(countryCode)` | 电话号码 | `@phone(+86)` → `+86139********` |
+| **日期时间** |
+| `@date(start,end)` | 随机日期 | `@date(2023-01-01,2024-12-31)` |
+| **媒体资源** |
+| `@image(width,height)` | 占位图片 | `@image(200x200)` |
+| `@color` | 随机颜色 | `"#a3f4c2"` |
+| **文本内容** |
+| `@text(wordCount)` | 随机文本 | `@text(15)` → `"这是一个随机生成的文本..."` |
+| `@pick(A,B,C)` | 随机选择 | `@pick(苹果,香蕉,橙子)` |
+| **地理位置** |
+| `@address(countries)` | 地址对象 | `@address(中国,美国)` |
+| **商业信息** |
+| `@company(industries)` | 公司对象 | `@company(科技,金融)` |
+| `@url(tlds)` | 随机 URL | `@url(com,cn)` → `"https://example.com"` |
+| **数组语法** |
+| 见下方示例 | 数组生成语法 | 使用代码块避免格式冲突 |
+
+**数组语法示例:**
+```javascript
+{
+  "users|3-5": {       // 生成3到5个用户
+    "id": "@guid",
+    "name": "@name"
+  },
+  "scores|10": "@integer(60,100)"  // 生成10个分数的数组
+}
+```
 
 #### 使用示例
 
@@ -153,9 +201,9 @@ PocketMock 内置强大的生成器，使用简单语法即可生成逼真的测
   - `avatar` -> `@image`
   - `{{baseUrl}}/users` -> `/users`
 
-**操作步骤**: 点击控制台顶部的 "Import" 按钮，选择 JSON 文件即可。
+**使用方法**: 点击控制台顶部的"导入"按钮，选择 JSON 文件即可。
 
-### 动态响应 (Dynamic Response)
+### 动态响应（函数 Mock）
 
 不再局限于静态 JSON！你可以编写 JavaScript 函数来根据请求动态生成响应。
 
@@ -181,38 +229,54 @@ PocketMock 内置强大的生成器，使用简单语法即可生成逼真的测
 
 ### 功能全面的网络面板
 
-内置的网络面板将实时记录所有网络请求（包括 Mocked 和真实请求）：
+内置的网络面板将实时记录所有网络请求（包括 Mocked 和真实请求），提供强大的调试功能：
 
-- **查看详情**：点击日志查看完整的 Request/Response Body。
-- **一键 Mock**：点击日志右侧的 "Mock" 按钮，将真实请求直接转换为 Mock 规则。
-- **筛选**：支持按 URL、方法、Mock 状态筛选。
+- **查看详情**: 点击日志查看完整的 Request/Response Body
+- **一键 Mock**: 点击日志上的"Mock"按钮，将真实请求直接转换为 Mock 规则
+- **筛选**: 支持按 URL、方法、Mock 状态筛选
 
-## 项目路线图
-
-查阅我们的 [项目路线图](ROADMAP.zh-CN.md) 了解 PocketMocker 的未来规划，以及您如何参与进来，共同构建项目的未来！
+---
 
 ## 技术原理
 
-- **拦截层**: 重写 `window.fetch` 和 `XMLHttpRequest` 原型链。
-- **UI 隔离**: 使用 **Shadow DOM** 封装调试台 UI，实现样式完全沙箱化。
-- **构建**: Vite 库模式打包，CSS 自动内联，实现单文件引入。
+- **猴子补丁**: 通过重写 `window.fetch` 和扩展 `XMLHttpRequest` 原型链来拦截请求
+- **Shadow DOM**: 使用 Shadow Root 封装调试 UI，实现样式完全沙箱化
+- **Vite 库模式**: 使用 Vite 的库模式和 `css: 'injected'` 策略，将 CSS 内联到 JS 中，实现**单文件导入**体验
+
+---
+
+## 项目路线图
+
+查看我们的 [项目路线图](ROADMAP.zh-CN.md)，了解 PocketMocker 的未来规划以及如何参与贡献！
+
+---
 
 ## 贡献与联系
 
-我们非常欢迎所有对 PocketMocker 的贡献！无论是报告 Bug、提出新功能建议、改进文档还是提交代码，您的帮助都将使 PocketMocker 变得更好。
+我们欢迎所有对 PocketMocker 的贡献！无论是报告 Bug、提出新功能建议、改进文档还是提交代码，您的帮助都将使 PocketMocker 变得更好。
 
 请阅读我们的 [贡献指南](CONTRIBUTING.zh-CN.md) 了解如何参与项目。
 
+### 联系我
+
+如果您有任何疑问、建议或想加入交流，欢迎通过以下方式联系：
+
+- **Twitter (X)**: [https://x.com/tiancha79267301](https://x.com/tiancha79267301)
+- **微信**
 <div align="center">
-  <h3>联系我</h3>
-  <p>如果您有任何疑问、建议或想加入用户群，可以通过以下方式联系：</p>
-  <img src="https://res.oafimg.cn/-/f69b6474980d7347/wechat.jpg" alt="我的微信" width="200px">
+  <img src="https://res.oafimg.cn/-/f69b6474980d7347/wechat.jpg" alt="我的微信" width="150px">
 </div>
 
-## 📄 开源协议
+---
+
+## 开源协议
 
 MIT © [tianchangNorth](https://github.com/tianchangNorth)
 
 ---
 
-**享受 Mock 的乐趣**
+<div align="center">
+
+**享受 Mock 的乐趣！** 🎉
+
+</div>

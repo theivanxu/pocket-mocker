@@ -1,57 +1,61 @@
+<div align="center">
+
 # PocketMocker
 
-[![npm version](https://badge.fury.io/js/pocket-mocker.svg)](https://badge.fury.io/js/pocket-mocker)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT). 
-> **Visual in-browser HTTP mocking tool for modern frontend development.**
->
-> A lightweight, visual debugging tool that intercepts and modifies HTTP requests directly in your browser.
+<p>
+  <a href="https://www.npmjs.com/package/pocket-mocker" target="_blank">
+    <img src="https://img.shields.io/npm/v/pocket-mocker?style=for-the-badge&logo=npm" alt="NPM Version" />
+  </a>
+  <a href="https://github.com/tianchangNorth/pocket-mocker/blob/main/LICENSE" target="_blank">
+    <img src="https://img.shields.io/github/license/tianchangNorth/pocket-mocker?style=for-the-badge&color=blue" alt="License" />
+  </a>
+  <a href="https://github.com/tianchangNorth/pocket-mocker/actions/workflows/ci.yml" target="_blank">
+    <img src="https://img.shields.io/github/actions/workflow/status/tianchangNorth/pocket-mocker/ci.yml?branch=main&style=for-the-badge&logo=github" alt="CI Status" />
+  </a>
+</p>
 
-**Live Demo:** [https://tianchangnorth.github.io/pocket-mocker/](https://tianchangnorth.github.io/pocket-mocker/)
+<p>
+  <a href="https://tianchangnorth.github.io/pocket-mocker/" target="_blank">
+    <strong>Live Demo</strong>
+  </a>
+  ·
+  <a href="#installation">Installation</a>
+  ·
+  <a href="#quick-start">Quick Start</a>
+  .
+  <a href="#contributing--contact">Contributing & Contact</a>
+  ·
+  <a href="https://github.com/tianchangNorth/pocket-mocker/discussions"> Discussions</a>
+</p>
 
-Have questions or ideas?  
-Please open an [Issue](https://github.com/tianchangNorth/pocket-mocker/issues) or start a [Discussion](https://github.com/tianchangnorth/pocket-mocker/discussions) — all levels of feedback are welcome!
+<p>
+  <strong>English</strong> · <a href="docs/README.zh-CN.md">中文</a>
+</p>
 
+</div>
 
-**English** | [中文文档](docs/README.zh-CN.md)
+---
 
-## Table of Contents
+## What is PocketMocker?
 
-- [Features](#-features)
-- [Comparison](#-comparison)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Advanced Features](#advanced-features)
-  - [Smart Mock Data Generation](#smart-mock-data-generation)
-  - [Config Import](#-config-import)
-  - [Dynamic Response](#dynamic-response-function-mock)
-  - [Network Panel](#comprehensive-network-panel)
-- [Roadmap](#roadmap)
-- [Technical Architecture](#technical-architecture)
-- [Contributing & Contact](#contributing--contact)
+**PocketMocker** is a zero-intrusion, visual HTTP mocking tool that works directly **inside your browser**. Unlike traditional tools like Postman or Mock.js, it embeds a powerful debugging panel into your page, allowing you to intercept and modify HTTP requests in real-time during development.
+
+**Perfect for**:
+- Intercepting `fetch` and `XMLHttpRequest` on the fly
+- Visual editing of mock responses
+- Real-time network monitoring
+- Testing error states and network latency
+- Team collaboration with shared configurations
+
 
 https://github.com/user-attachments/assets/e7501191-7ef1-4bd4-bd21-6500585fe4ad.mp4
 
+---
 
-**PocketMocker** is a zero-intrusion frontend Mock tool. Unlike Postman or traditional `mock.js`, it embeds directly **into your page**, allowing you to intercept `fetch` and `XMLHttpRequest` in real-time during development, dynamically modify response data, simulate network latency, and test error status codes.
-
-## ✨ Features
-
-- **Dual-Core Interception Engine**: Native support for both `fetch` and `XMLHttpRequest` (Ajax), seamlessly compatible with Axios and other third-party libraries
-- **Visual Console**: Built-in Svelte debugging panel with **CodeMirror 6** editor (JS syntax highlighting), toggle switches, and real-time preview
-- **Dynamic Response**: Support writing JavaScript functions to handle complex logic and return dynamic data based on request parameters
-- **Smart UI**: Auto-adaptive **Light/Dark Theme**, elegant **Toast** notifications, and responsive layout
-- **Comprehensive Network Panel**: Logs all network requests (mocked or real), with **search & filter**, **details view** (request/response body), **single-log deletion**, and **"Mock It"** feature to convert real requests into mock rules with one click
-- **Config Import**: Import mock rules directly from **Postman Collections** and **OpenAPI 3.0** specifications with smart data generation
-- **Shadow DOM Isolation**: UI styles are completely isolated, never polluting your application's CSS or being affected by external styles
-- **Network Simulation**: One-click simulation of API **latency**, **404/500 errors**, perfect for testing skeleton screens and error boundaries
-- **Dual-Mode Persistence**:
-  - **Local Mode**: Default browser LocalStorage storage, rules persist across page refreshes
-  - **Server Mode**: Vite plugin integration saves rules to local files for **team collaboration**
-
-## Comparison
+## Why PocketMocker?
 
 | Feature | PocketMocker | Mock.js | Postman | MSW |
-| :--- | :---: | :---: | :---: | :---: |
+|:---|:---:|:---:|:---:|:---:|
 | **Browser Integration** | ✅ (In-page UI) | ✅ | ❌ (Independent App) | ✅ (No UI) |
 | **Visual Editing** | ✅ | ❌ | ✅ | ❌ |
 | **Network Logging** | ✅ | ❌ | ✅ | ❌ |
@@ -59,7 +63,10 @@ https://github.com/user-attachments/assets/e7501191-7ef1-4bd4-bd21-6500585fe4ad.
 | **Smart Data Gen** | ✅ | ✅ | ❌ | ❌ |
 | **Config Import** | ✅ (Postman/OA3) | ❌ | ✅ | ❌ |
 
+---
+
 ## Installation
+
 ```bash
 npm install pocket-mocker --save-dev
 # or
@@ -68,11 +75,13 @@ yarn add pocket-mocker -D
 pnpm add pocket-mocker -D
 ```
 
+---
+
 ## Quick Start
 
 ### Method 1: Zero Configuration (Local Mode)
 
-Perfect for individual development or quick experimentation. Simply import and start in your project's entry file(save in local storage):
+Perfect for individual development or quick experimentation. Simply import and start in your project's entry file:
 
 ```javascript
 import { pocketMock } from 'pocket-mocker';
@@ -89,7 +98,7 @@ After starting your project, you'll see the **PocketMock** floating panel in the
 
 Ideal for production-level projects. The Vite plugin integrates with the file system, saving Mock rules to config files for team sharing.
 
-**1. import and start in your project's entry file:**
+**1. Import and start in your project's entry file:**
 
 ```javascript
 import { pocketMock } from 'pocket-mocker';
@@ -116,8 +125,9 @@ export default defineConfig({
 
 Run `npm run dev`. PocketMock automatically detects the plugin environment and switches to **Server Mode**.
 
-## Advanced Features
+---
 
+## Advanced Features
 
 ### Smart Mock Data Generation
 
@@ -127,14 +137,42 @@ PocketMock includes a powerful **Smart Mock Generator** that allows you to creat
 
 | Syntax | Description | Example |
 |:---|:---|:---|
+| **Basic** |
 | `@guid` | UUID | `"f47ac-..."` |
-| `@name` | Name | `"John Doe"` |
-| `@email` | Email | `"user@example.com"` |
-| `@image(200x200)` | Image URL | `"https://via..."` |
-| `@date` | Date | `"2023-12-25"` |
-| `@integer(1,100)` | Integer | `42` |
-| `@boolean` | Boolean | `true` |
-| `@pick(A,B,C)` | Random Pick | `"B"` |
+| `@integer(min,max)` | Random Integer | `@integer(1,100)` → `42` |
+| `@float(min,max,decimals)` | Random Float | `@float(0,1,2)` → `0.57` |
+| `@boolean` | Random Boolean | `true` |
+| `@string(length)` | Random String | `@string(8)` → `"aX9bK2pQ"` |
+| **Personal** |
+| `@name` | Random Name | `"John"` |
+| `@email(domains)` | Random Email | `@email(gmail.com,yahoo.com)` |
+| `phone(countryCode)` | Phone Number | `@phone(+1)` → `+1234567890` |
+| **Date/Time** |
+| `@date(start,end)` | Random Date | `@date(2023-01-01,2024-12-31)` |
+| **Media** |
+| `@image(width,height)` | Placeholder Image | `@image(200x200)` |
+| `@color` | Random Color | `"#a3f4c2"` |
+| **Text** |
+| `@text(wordCount)` | Random Text | `@text(15)` → `"The quick brown fox..."` |
+| `@pick(A,B,C)` | Random Pick | `@pick(apple,banana,orange)` |
+| **Location** |
+| `@address(countries)` | Address Object | `@address(US,UK)` |
+| **Business** |
+| `@company(industries)` | Company Object | `@company(Tech,Finance)` |
+| `@url(tlds)` | Random URL | `@url(com,io)` → `"https://example.com"` |
+| **Array** |
+| See examples below | Array generation syntax | Use code blocks to avoid format conflicts |
+
+**Array Syntax Examples:**
+```javascript
+{
+  "users|3-5": {       // 3 to 5 users
+    "id": "@guid",
+    "name": "@name"
+  },
+  "scores|10": "@integer(60,100)"  // Array of 10 scores
+}
+```
 
 #### Usage Example
 
@@ -197,15 +235,21 @@ The built-in Network panel logs all network requests (both mocked and real) in r
 - **One-Click Mock**: Click the "Mock" button on any log to instantly convert a real request into a mock rule.
 - **Filter**: Filter logs by URL, Method, or Mock status.
 
+---
+
 ## Technical Architecture
 
 - **Monkey Patching**: Intercepts requests by overriding `window.fetch` and extending `XMLHttpRequest` prototype chain.
 - **Shadow DOM**: Encapsulates debugging UI in Shadow Root for complete style sandboxing.
 - **Vite Library Mode**: Uses Vite's library mode with `css: 'injected'` strategy to inline all CSS into JS for **single-file import** experience.
 
+---
+
 ## Roadmap
 
 Check out our [Roadmap](ROADMAP.md) to see what's next for PocketMocker and how you can contribute to its future!
+
+---
 
 ## Contributing & Contact
 
@@ -223,9 +267,16 @@ If you have any questions, suggestions, or would like to connect, feel free to r
   <img src="https://res.oafimg.cn/-/f69b6474980d7347/wechat.jpg" alt="My WeChat" width="150px">
 </div>
 
-## 📄 License
-
-MIT © [tianchangNorth](https://github.com/tianchangNorth)
 ---
 
-**Happy Mocking!**
+## License
+
+MIT © [tianchangNorth](https://github.com/tianchangNorth)
+
+---
+
+<div align="center">
+
+**Happy Mocking!** 🎉
+
+</div>
