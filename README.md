@@ -68,10 +68,9 @@ Toggle between **Success**, **Error (500/404)**, or **Empty Data** states in one
 Need to test a long username? A missing avatar? Or a specific price format? Just edit the response JSON directly in the panel and see the UI update instantly.
 
 ### Edge Case Verification
-Simulate network delays (latency), timeout errors, or unauthorized (401) responses to ensure your application handles exceptions gracefully.
+Simulate network delays (latency), timeout errors, or unauthorized (401) responses to ensure your application handles exceptions gracefully.  
 
 https://github.com/user-attachments/assets/e7501191-7ef1-4bd4-bd21-6500585fe4ad
----
 
 ## Installation
 

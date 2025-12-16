@@ -71,7 +71,6 @@
 模拟网络延迟、超时错误或未授权（401）响应，确保您的应用优雅地处理异常情况。
 
 https://github.com/user-attachments/assets/e7501191-7ef1-4bd4-bd21-6500585fe4ad
----
 
 ## 何时使用 PocketMocker？
 
