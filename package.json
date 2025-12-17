@@ -2,7 +2,7 @@
   "name": "@theivanxu/pocket-mocker",
   "description": "Visual in-browser HTTP mocking tool for modern frontend development",
   "private": false,
-  "version": "1.2.2",
+  "version": "1.2.28",
   "type": "module",
   "keywords": [
     "mock",

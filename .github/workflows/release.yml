@@ -65,6 +65,16 @@ jobs:
           echo "name=$NAME" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
+      - name: Validate package version matches tag
+        run: |
+          TAG_VERSION="${{ steps.get_version.outputs.version }}"
+          PKG_VERSION="${{ steps.pkg.outputs.version }}"
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "Tag version ($TAG_VERSION) does not match package.json version ($PKG_VERSION)."
+            echo "Update package.json version before tagging, or the publish/release will be inconsistent."
+            exit 1
+          fi
+
       - name: Pack
         id: pack
         run: |
