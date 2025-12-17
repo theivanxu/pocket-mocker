@@ -1,4 +1,4 @@
-name: NPM Package Release
+name: Release
 
 on:
   push:
@@ -210,16 +210,14 @@ jobs:
           else
             PREFIX="❌"
           fi
-          TEXT=$(cat <<EOF
-$PREFIX NPM Release: $STATUS
-
-Repo: ${{ github.repository }}
-Tag: $TAG
-Package: $PACKAGE
-Publish: $PUBLISH_OUTCOME
-Run: $RUN_URL
-EOF
-          )
+          TEXT=$(printf "%s NPM Release: %s\n\nRepo: %s\nTag: %s\nPackage: %s\nPublish: %s\nRun: %s\n" \
+            "$PREFIX" \
+            "$STATUS" \
+            "${{ github.repository }}" \
+            "$TAG" \
+            "$PACKAGE" \
+            "$PUBLISH_OUTCOME" \
+            "$RUN_URL")
           curl -sS -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             -d "chat_id=${TELEGRAM_CHAT_ID}" \
             --data-urlencode "text=${TEXT}" \
