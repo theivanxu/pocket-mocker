@@ -1,5 +1,33 @@
 # Changelog
 
+## v1.2.4 - 2025-12-23
+
+### New Features
+
+- **Rule Grouping**:
+  - Added rule grouping functionality to organize rules into folders
+  - Create, rename, and delete groups from the rule list toolbar
+  - Collapsible groups with visual hierarchy indicators
+  - Rules can be assigned to groups via dropdown in rule editor
+  - Group count display showing number of rules per group
+
+- **Enhanced Rule Creation**:
+  - "Add Rule" panel now supports selecting group during creation
+  - Group dropdown only shows when groups exist
+
+### Improvements
+
+- **User Documentation**:
+  - Added comprehensive [User Manual](docs/USER_MANUAL.md) in English
+  - Added comprehensive [用户手册](docs/USER_MANUAL.zh-CN.md) in Chinese
+  - New documentation includes quick start, interface overview, rule management guide, network debugging, and FAQ
+
+- **ROADMAP Updates**:
+  - Marked completed items in Phase 1: UI State Persistence, Enhanced JSON Editor, Network Detail View, Visual & UX Polish, and Rule Grouping
+  - Updated to reflect v1.2.x iteration approach
+
+---
+
 ## v1.2.3 - 2025-12-19
 
 ### New Features
