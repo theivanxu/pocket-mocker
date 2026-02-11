@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { deleteRule, updateRuleResponse, updateRuleHeaders, updateRuleUrl, updateRuleMethod, updateRuleStatus, updateRuleDelay } from '@/store/store';
+  import { deleteRule, updateRuleResponse, updateRuleHeaders, updateRuleUrl, updateRuleMethod, updateRuleStatus, updateRuleDelay, updateRuleGroup, groups } from '@/store/store';
   import { uiState } from '@/lib/stores/dashboard-store';
   import { showToast } from '@/lib/ui/toast-store';
+  import { convertRuleToPostman } from '@/core/utils/exporter';
   import Button from '@/lib/ui/Button.svelte';
   import Input from '@/lib/ui/Input.svelte';
   import Select from '@/lib/ui/Select.svelte';
@@ -15,17 +16,40 @@
   let editMethod = "GET";
   let editStatus: string = "200";
   let editDelay: string = "0";
+  let editGroupId = "";
+  let editorLang: 'json' | 'javascript' = 'json';
   
   const METHODS = ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"];
   let currentRuleId: string | null = null;
+
+  $: groupOptions = [
+    { label: "No Group", value: "" },
+    ...$groups.map(g => ({ label: g.name, value: g.id }))
+  ];
+
+  function detectLanguage(content: string): 'json' | 'javascript' {
+    if (!content) return 'json';
+    try {
+      JSON.parse(content);
+      return 'json';
+    } catch {
+      const trimmed = content.trim();
+      if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+         return 'json';
+      }
+      return 'javascript';
+    }
+  }
 
   $: if (rule && rule.id !== currentRuleId) {
     currentRuleId = rule.id;
     
     if (typeof rule.response === 'string') {
       editContent = rule.response;
+      editorLang = detectLanguage(editContent);
     } else {
       editContent = JSON.stringify(rule.response, null, 2);
+      editorLang = 'json';
     }
     
     editHeadersContent = JSON.stringify(rule.headers || {}, null, 2);
@@ -33,6 +57,11 @@
     editMethod = rule.method;
     editStatus = String(rule.status || 200);
     editDelay = String(rule.delay || 0);
+    editGroupId = rule.groupId || "";
+  }
+  
+  $: if ($uiState.activeRuleTab === 'body') {
+     editorLang = detectLanguage(editContent);
   }
 
   function saveEdit() {
@@ -45,6 +74,7 @@
         updateRuleMethod(rule.id, editMethod);
         updateRuleStatus(rule.id, parseInt(editStatus) || 200);
         updateRuleDelay(rule.id, parseInt(editDelay) || 0);
+        updateRuleGroup(rule.id, editGroupId || undefined);
 
         uiState.setEditingRule(null);
         showToast("Rule saved successfully", "success");
@@ -74,6 +104,16 @@
       showToast("Invalid JSON, cannot format", "error");
     }
   }
+
+  async function copyPostmanConfig() {
+    try {
+      const config = convertRuleToPostman(rule);
+      await navigator.clipboard.writeText(config);
+      showToast("Postman config copied to clipboard", "success");
+    } catch (e) {
+      showToast("Failed to copy", "error");
+    }
+  }
 </script>
 
 <div class="editor-panel">
@@ -82,6 +122,11 @@
         <div style="width: 110px;">
           <Select bind:value={editMethod} options={METHODS} />
         </div>
+        {#if $groups.length > 0}
+            <div style="width: 140px;">
+                <Select bind:value={editGroupId} options={groupOptions} />
+            </div>
+        {/if}
         <div style="flex: 1;">
           <Input placeholder="/api/path" bind:value={editUrl} />
         </div>
@@ -112,6 +157,12 @@
       >Headers</button>
     </div>
     <div class="editor-actions">
+        <button class="action-btn" title="Copy Postman Config" on:click={copyPostmanConfig}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+          </svg>
+        </button>
         <button class="action-btn" title="Format JSON" on:click={formatJSON}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M21 10H3M21 6H3M21 14H3M21 18H3"/>
@@ -135,6 +186,7 @@
         value={editContent}
         on:change={(e) => (editContent = e.detail)}
         height="100%"
+        lang={editorLang}
       />
     {:else}
       <JsonEditor

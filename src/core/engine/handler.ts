@@ -3,7 +3,7 @@ import { generateMockData } from './smart-mock';
 import { createMockRequest } from './mock-request';
 import { getActiveRules } from '../manager/rule-manager';
 import { requestLogs } from '@/store/log-store';
-import { formatHeaders, formatRequestPayload, formatResponseBody } from '../utils/http';
+import { formatJSON } from '../utils/http';
 
 import type { MockRule } from '../types';
 
@@ -45,6 +45,7 @@ export async function resolveMockResponse(
         const evaluated = new Function('return ' + resolvedResponse)();
         resolvedResponse = evaluated;
       } catch (e) {
+        console.error('[PocketMock] Error generating mock data:', e);
       }
     }
   }
@@ -53,8 +54,8 @@ export async function resolveMockResponse(
     const mockRequest = await createMockRequest(url, method, requestHeaders, bodyData, matchParams);
     try {
       resolvedResponse = await Promise.resolve(resolvedResponse(mockRequest));
-    } catch (e) {
-      resolvedResponse = { status: 500, body: { error: 'Mock function execution failed' } };
+    } catch (e: any) {
+      resolvedResponse = { status: 500, body: { error: 'Mock function execution failed', details: e.message } };
     }
   }
 
@@ -97,6 +98,7 @@ export function logMockRequest(
   method: string,
   url: string,
   status: number,
+  isMock: boolean,
   startTime: number,
   requestHeaders?: any,
   responseBody?: any,
@@ -109,9 +111,9 @@ export function logMockRequest(
     status,
     timestamp: Date.now(),
     duration,
-    isMock: true,
-    requestHeaders: formatHeaders(requestHeaders),
-    requestPayload: formatRequestPayload(requestPayload),
-    responseBody: formatResponseBody(responseBody)
+    isMock,
+    requestHeaders: formatJSON(requestHeaders),
+    requestPayload: formatJSON(requestPayload),
+    responseBody: formatJSON(responseBody)
   });
 }

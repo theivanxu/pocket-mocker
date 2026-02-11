@@ -1,11 +1,16 @@
 import type { MockGenerator } from '../types'
+import { generateUsername } from 'unique-username-generator';
+import { faker } from '@faker-js/faker';
 
 const generators: Record<string, MockGenerator> = {
 
   guid: () => {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      return crypto.randomUUID();
+    }
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      const r = Math.random() * 16 | 0,
-        v = c === 'x' ? r : (r & 0x3 | 0x8);
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     });
   },
@@ -15,6 +20,38 @@ const generators: Record<string, MockGenerator> = {
     const min = parseInt(minStr, 10);
     const max = parseInt(maxStr, 10);
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  },
+
+  username: (args?: string) => {
+    if (!args) {
+      return generateUsername();
+    }
+
+    const params = args.split(',').map(s => s.trim().replace(/^["']|["']$/g, ''));
+    const separator = params[0] || '';
+    const randomDigits = params[1] ? parseInt(params[1], 10) : 0;
+    const maxLength = params[2] ? parseInt(params[2], 10) : undefined;
+    const dictType = params[3] || undefined;
+
+    if (dictType) {
+      return generateUsername(separator, randomDigits, maxLength, dictType);
+    } else if (maxLength) {
+      return generateUsername(separator, randomDigits, maxLength);
+    } else if (randomDigits) {
+      return generateUsername(separator, randomDigits);
+    } else if (separator) {
+      return generateUsername(separator);
+    } else {
+      return generateUsername();
+    }
+  },
+
+  ip: (args?: string) => {
+    if (['6', 'IPv6', 'ipv6', 'v6'].includes(args as string)) {
+      return faker.internet.ipv6();
+    } else {
+      return faker.internet.ipv4();
+    }
   },
 
   string: (args?: string) => {
@@ -122,7 +159,7 @@ const generators: Record<string, MockGenerator> = {
     };
   },
 
-  color: () => `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`,
+  color: () => `#${Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0')}`,
 
   url: (args?: string) => {
     const tlds = args ? args.split(',').map(s => s.trim()) : ['com', 'org', 'net', 'io', 'co', 'app', 'dev'];

@@ -19,6 +19,8 @@
     <strong>Live Demo</strong>
   </a>
   ·
+  <a href="docs/USER_MANUAL.md"><strong>📖 User Manual</strong></a>
+  ·
   <a href="#installation">Installation</a>
   ·
   <a href="#quick-start">Quick Start</a>
@@ -37,6 +39,11 @@
 </p>
 
 </div>
+
+## Documentation
+
+- **[English User Manual](docs/USER_MANUAL.md)**: Detailed guide on features, syntax, and usage.
+- **[中文用户手册](docs/USER_MANUAL.zh-CN.md)**: 功能、语法及使用指南。
 
 ## What is PocketMocker?
 
@@ -165,13 +172,16 @@ PocketMock includes a powerful **Smart Mock Generator** that allows you to creat
 
 ```javascript
 {
-  "user": {
-    "id": "@guid",                    // → "550e8400-e29b-41d4-a716-446655440000"
-    "name": "@name",                  // → "John"
-    "email": "@email",                // → "john.smith@example.com"
-    "avatar": "@image(100x100)",      // → "https://via.placeholder.com/100x100"
-    "age": "@integer(18,60)",        // → 25
-    "role": "@pick(admin,user)"      // → "admin"
+  "user": {                           // → Generate user data
+    "id": "@guid",                   // → "550e8400-e29b-41d4-a716-446655440000"
+    "name": "@name",                 // → "John"
+    "username": "@username",       // → "brightpanda"
+    "email": "@email",               // → "john.smith@example.com"
+    "avatar": "@image(100x100)",     // → "https://via.placeholder.com/100x100"
+    "age": "@integer(18,60)",       // → 25
+    "role": "@pick(admin,user)",     // → "admin"
+    "ip": "@ip",                  // → "192.168.1.1"
+    "ipv6": "@ip(v6)"                // → "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
   }
 }
 ```
@@ -182,7 +192,9 @@ PocketMock includes a powerful **Smart Mock Generator** that allows you to creat
 |--------|----------|---------|
 | `@guid` | Unique ID | `"f47ac..."` |
 | `@name` | Random Name | `"John"` |
+| `@username` | Random Username | `"cool_coder"` |
 | `@email` | Email Address | `"user@example.com"` |
+| `@ip` | Random IP (v4/v6) | `@ip` → `192.168.1.1` |
 | `@integer(min,max)` | Random Integer | `@integer(1,100)` → `42` |
 | `@pick(A,B,C)` | Random Choice | `@pick(apple,banana)` → `"apple"` |
 | `@image(100x100)` | Placeholder Image | `"https://via.placeholder.com/100x100"` |
@@ -199,7 +211,10 @@ PocketMock includes a powerful **Smart Mock Generator** that allows you to creat
 | `@boolean` | Random Boolean | `true` |
 | `@string(length)` | Random String | `@string(8)` → `"aX9bK2pQ"` |
 | **Personal** |
+| `@username(separator, randomDigits, maxLength, dictType)` | Username | `@username("-", 2, 20)` |
 | `@phone(countryCode)` | Phone Number | `@phone(+1)` |
+| **Network** |
+| `@ip(version)` | IP Address | `@ip(v6/v4/6/4)` → IPv(x), `@ip` → IPv4 |
 | **Date/Time** |
 | `@date(start,end)` | Random Date | `@date(2023-01-01,2024-12-31)` |
 | **Other** |
@@ -245,24 +260,23 @@ You are not limited to static JSON. You can write JavaScript functions to genera
 }
 ```
 
-### Config Import
+### Import & Export
 
-Import mock rules directly from popular API documentation formats with auto-conversion.
+Seamlessly integrate with your existing API workflow.
 
-- **Supported Formats**: Postman Collection v2.1.0, OpenAPI 3.0 (Swagger)
-- **Smart Conversion**:
-  - `user_id` -> `@guid`
-  - `avatar` -> `@image`
-  - `{{baseUrl}}/users` -> `/users`
-
-**How to use**: Click the "Import" button in the dashboard header and select your JSON file.
+- **Import**: Import mock rules directly from **Postman Collection (v2.1)** and **OpenAPI 3.0 (Swagger)** files.
+  - Smart conversion automatically maps fields like `user_id` to `@guid`.
+- **Export**: Export any mock rule to **Postman JSON** format directly from the rule editor, making it easy to share or test in other tools.
 
 ### Comprehensive Network Panel
 
 The built-in Network panel logs all network requests (both mocked and real) in real-time, providing powerful debugging capabilities:
 
 - **View Details**: Click logs to view full Request/Response Body.
-- **One-Click Mock**: Click the "Mock" button on any log to instantly convert a real request into a mock rule.
+- **Context Menu**: Right-click on any log to:
+  - **Copy URL/Response**: Quickly copy data to clipboard.
+  - **Copy as cURL**: Generate a cURL command to reproduce the request in terminal.
+  - **Add to Mock Rules**: Instantly convert a real request into a mock rule.
 - **Filter**: Filter logs by URL, Method, or Mock status.
 
 ---

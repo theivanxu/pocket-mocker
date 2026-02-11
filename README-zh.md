@@ -12,9 +12,6 @@
   <a href="https://github.com/tianchangNorth/pocket-mocker/actions/workflows/ci.yml" target="_blank">
     <img src="https://img.shields.io/github/actions/workflow/status/tianchangNorth/pocket-mocker/ci.yml?branch=main&style=for-the-badge&logo=github" alt="CI 状态" />
   </a>
-  <a href="https://github.com/tianchangNorth/pocket-mocker" target="_blank">
-    <img src="https://atomgit.com/tianchangNorth/pocket-mocker/star/badge.svg" alt="star" />
-  </a>
 </p>
 
 <p>
@@ -22,13 +19,15 @@
     <strong>🚀 在线演示</strong>
   </a>
   ·
+  <a href="docs/USER_MANUAL.zh-CN.md"><strong>📖 用户手册</strong></a>
+  ·
   <a href="#安装">安装</a>
   ·
   <a href="#快速开始">快速开始</a>
   ·
   <a href="#贡献与联系">贡献与联系</a>
   ·
-  <a href="https://github.com/tianchangNorth/pocket-mocker/discussions">讨论</a>
+  <a href="https://github.com/tianchangNorth/pocket-mocker/discussions">讨论区</a>
   ·
   <a href="https://discord.gg/cjGqnppNZW" target="_blank">
     <strong>💬 Discord</strong>
@@ -40,6 +39,11 @@
 </p>
 
 </div>
+
+## 文档
+
+- **[中文用户手册](docs/USER_MANUAL.zh-CN.md)**: 功能、语法及使用详细指南。
+- **[English User Manual](docs/USER_MANUAL.md)**: Detailed guide on features, syntax, and usage.
 
 ## PocketMocker 是什么？
 
@@ -77,10 +81,7 @@
 ### 边界情况验证
 模拟网络延迟、超时错误或未授权（401）响应，确保您的应用优雅地处理异常情况。
 
-
-<video src="https://res.oafimg.cn/-/95cf85046b29fba1/pocket-mocker-new.mp4" controls width="800"></video>
-
----
+https://github.com/user-attachments/assets/e7501191-7ef1-4bd4-bd21-6500585fe4ad
 
 ## 安装
 
@@ -171,7 +172,7 @@ PocketMock 内置强大的智能生成器，使用简单语法即可生成逼真
 
 ```javascript
 {
-  "user": {
+  "user|10": {.                       // → 生成10个用户
     "id": "@guid",                    // → "550e8400-e29b-41d4"
     "name": "@name",                  // → "张三"
     "email": "@email",                // → "zhangsan@example.com"
@@ -251,15 +252,13 @@ PocketMock 内置强大的智能生成器，使用简单语法即可生成逼真
 }
 ```
 
-### 配置导入
+### 导入与导出
 
-支持直接导入 API 文档，自动转换并生成智能 Mock 数据。
+无缝集成现有的 API 工作流。
 
-- **支持格式**: Postman Collection v2.1.0, OpenAPI 3.0 (Swagger)
-- **智能转换**:
-  - `user_id` -> `@guid`
-  - `avatar` -> `@image`
-  - `{{baseUrl}}/users` -> `/users`
+- **导入**: 支持从 **Postman Collection (v2.1)** 和 **OpenAPI 3.0 (Swagger)** 文件直接导入 Mock 规则。
+  - 智能转换将自动映射字段，如 `user_id` 映射为 `@guid`。
+- **导出**: 支持直接从规则编辑器将任意 Mock 规则导出为 **Postman JSON** 格式，方便分享或在其他工具中测试。
 
 **使用方法**: 点击控制台顶部的"导入"按钮，选择 JSON 文件即可。
 
@@ -268,7 +267,10 @@ PocketMock 内置强大的智能生成器，使用简单语法即可生成逼真
 内置的网络面板将实时记录所有网络请求（包括 Mocked 和真实请求），提供强大的调试功能：
 
 - **查看详情**: 点击日志查看完整的 Request/Response Body。
-- **一键 Mock**: 点击日志上的"Mock"按钮，将真实请求直接转换为 Mock 规则。
+- **右键菜单**: 在任意日志上右键单击即可：
+  - **复制 URL/响应**: 快速复制数据到剪贴板。
+  - **复制为 cURL**: 生成 cURL 命令以便在终端重现请求。
+  - **添加到 Mock 规则**: 即时将真实请求转换为 Mock 规则。
 - **筛选**: 支持按 URL、方法、Mock 状态筛选。
 
 ---

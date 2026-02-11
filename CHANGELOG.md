@@ -1,5 +1,118 @@
 # Changelog
 
+## v1.2.5 - 2026-01-13
+
+### New Features
+
+- **Import/Export Rules**:
+  - Added `getAllRules()` utility function to retrieve all rules as JSON
+  - Added `exportRules()` function to download rules as JSON file
+  - Added import functionality with overwrite option
+  - New "Export" and "Import" buttons in rule editor toolbar
+
+- **Network Log Context Menu**:
+  - Added right-click context menu for network log entries
+  - Copy response body to clipboard
+  - Copy as cURL command for easy reproduction
+  - Clear all network logs option
+
+### Improvements
+
+- **Error Handling**:
+  - Enhanced error response to include error details message
+  - Improved error handling in mock response resolution
+  - Better error messaging for mock function execution failures
+
+- **Mock Data Generation**:
+  - Optimized unique ID generation using `crypto.randomUUID()` when available
+  - Improved test cases for UUID generation validation
+  - Enhanced mock data generation logic consistency
+
+- **UI/UX**:
+  - Optimized context menu DOM management for better performance
+  - Ensured URL format correctness in cURL generation
+  - Fixed network log menu item display issues
+
+### Documentation
+
+- Updated README with import/export feature documentation
+- Updated user manual with new features and screenshots
+- Improved documentation clarity for network debugging features
+
+---
+
+## v1.2.4 - 2025-12-23
+
+### New Features
+
+- **Rule Grouping**:
+  - Added rule grouping functionality to organize rules into folders
+  - Create, rename, and delete groups from the rule list toolbar
+  - Collapsible groups with visual hierarchy indicators
+  - Rules can be assigned to groups via dropdown in rule editor
+  - Group count display showing number of rules per group
+
+- **Enhanced Rule Creation**:
+  - "Add Rule" panel now supports selecting group during creation
+  - Group dropdown only shows when groups exist
+
+### Improvements
+
+- **User Documentation**:
+  - Added comprehensive [User Manual](docs/USER_MANUAL.md) in English
+  - Added comprehensive [用户手册](docs/USER_MANUAL.zh-CN.md) in Chinese
+  - New documentation includes quick start, interface overview, rule management guide, network debugging, and FAQ
+
+- **ROADMAP Updates**:
+  - Marked completed items in Phase 1: UI State Persistence, Enhanced JSON Editor, Network Detail View, Visual & UX Polish, and Rule Grouping
+  - Updated to reflect v1.2.x iteration approach
+
+---
+
+## v1.2.3 - 2025-12-19
+
+### New Features
+
+- **Mock Data Generators**:
+  - Add IP address generator supporting both IPv4 and IPv6 formats (`@ip`)
+  - Add username generator with customizable options (`@username`)
+  - Include comprehensive test coverage for new generators
+
+### Improvements
+
+- **UI State Persistence**:
+  - Implement UI panel position and size persistence across sessions
+  - Added `saveUiState` and `loadUiState` utilities in `src/core/utils/local.ts`
+  - Dashboard state now remembers window position and dimensions
+
+- **Enhanced JSON Editor**:
+  - Increased size of code folding gutter markers for better visibility
+  - Added readonly, maxHeight, and language support to JsonEditor
+  - Integrated JsonEditor into NetworkDetail for formatted JSON viewing
+  - Fixed JSON folding functionality for improved code navigation
+
+- **Network Detail View**:
+  - Upgraded NetworkDetail component with enhanced JSON formatting
+  - Better display of request/response data with proper formatting
+  - Improved tab organization and visibility
+
+- **Core Utilities**:
+  - Consolidated JSON formatting into a single `formatJSON` utility function
+  - Replaced `formatRequestPayload` and `formatHeaders` with unified approach
+  - Added support for Headers object formatting
+
+- **Visual Enhancements**:
+  - Optimized main.ts styling for better visual presentation
+  - Improved Container component resize handle width
+  - Enhanced RuleEditor with better UX features
+  - Fixed delete SVG icon display issues
+
+### Bug Fixes
+
+- **Editor Folding**: Fixed the bug causing JSON code folding to not work properly in the editor
+- **UI State Initialization**: Improved robustness of UI state initialization with better type safety
+- **Filter Reset**: Fixed filter reset behavior on page refresh
+
 ## v1.2.2 - 2025-12-17
 
 ### Bug Fixes
