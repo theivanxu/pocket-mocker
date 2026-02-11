@@ -14,6 +14,7 @@ export interface PocketMockOptions {
 }
 
 export type { MockRule, MockRequest, DynamicResponseFunction } from './core/types';
+export { registerCustomRules, clearCustomRules } from './core/engine/smart-mock';
 
 export function defineConfig(config: MockRule[]): MockRule[] {
   return config;
