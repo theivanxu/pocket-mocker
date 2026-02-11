@@ -78,6 +78,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^10.1.0",
+    "@rolldown/binding-linux-x64-gnu": "^1.0.0-rc.3",
     "axios": "^1.13.2",
     "unique-username-generator": "^1.5.1"
   }
