@@ -2,6 +2,30 @@ import type { MockGenerator } from '../types'
 import { generateUsername } from 'unique-username-generator';
 import { faker } from '@faker-js/faker';
 
+let customRules: Record<string, any> = {};
+
+export function registerCustomRules(rules: Record<string, any>): void {
+  for (const key in rules) {
+    if (Object.prototype.hasOwnProperty.call(rules, key)) {
+      const normalizedKey = key.startsWith('@') ? key.slice(1) : key;
+      customRules[normalizedKey] = rules[key];
+    }
+  }
+}
+
+export function clearCustomRules(): void {
+  customRules = {};
+}
+
+function resolveCustomRule(name: string): any {
+  if (name in customRules) {
+    return generateMockData(typeof structuredClone === 'function'
+      ? structuredClone(customRules[name])
+      : JSON.parse(JSON.stringify(customRules[name])));
+  }
+  return undefined;
+}
+
 const generators: Record<string, MockGenerator> = {
 
   guid: () => {
@@ -207,6 +231,9 @@ export function generateMockData(template: any): any {
         if (generatorFn) {
           return generatorFn(argsStr);
         }
+        if (generatorName in customRules) {
+          return resolveCustomRule(generatorName);
+        }
       }
     }
     return template;
@@ -250,6 +277,10 @@ export function generateMockData(template: any): any {
           const generatorFn = generators[generatorName];
           if (generatorFn) {
             result[key] = generatorFn(argsStr);
+            continue;
+          }
+          if (generatorName in customRules) {
+            result[key] = resolveCustomRule(generatorName);
             continue;
           }
         }
