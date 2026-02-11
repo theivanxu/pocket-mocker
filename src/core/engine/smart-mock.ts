@@ -1,11 +1,16 @@
 import type { MockGenerator } from '../types'
+import { generateUsername } from 'unique-username-generator';
+import { faker } from '@faker-js/faker';
 
 const generators: Record<string, MockGenerator> = {
 
   guid: () => {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      return crypto.randomUUID();
+    }
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      const r = Math.random() * 16 | 0,
-        v = c === 'x' ? r : (r & 0x3 | 0x8);
+      const r = Math.random() * 16 | 0;
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     });
   },
@@ -15,6 +20,75 @@ const generators: Record<string, MockGenerator> = {
     const min = parseInt(minStr, 10);
     const max = parseInt(maxStr, 10);
     return Math.floor(Math.random() * (max - min + 1)) + min;
+  },
+
+  username: (args?: string) => {
+    if (!args) {
+      return generateUsername();
+    }
+
+    const params = args.split(',').map(s => s.trim().replace(/^["']|["']$/g, ''));
+    const separator = params[0] || '';
+    const randomDigits = params[1] ? parseInt(params[1], 10) : 0;
+    const maxLength = params[2] ? parseInt(params[2], 10) : undefined;
+    const dictType = params[3] || undefined;
+
+    if (dictType) {
+      return generateUsername(separator, randomDigits, maxLength, dictType);
+    } else if (maxLength) {
+      return generateUsername(separator, randomDigits, maxLength);
+    } else if (randomDigits) {
+      return generateUsername(separator, randomDigits);
+    } else if (separator) {
+      return generateUsername(separator);
+    } else {
+      return generateUsername();
+    }
+  },
+
+  ip: (args?: string) => {
+    if (['6', 'IPv6', 'ipv6', 'v6'].includes(args as string)) {
+      return faker.internet.ipv6();
+    } else {
+      return faker.internet.ipv4();
+    }
+  },
+
+  timestamp: (args?: string) => {
+    if (args === 'ms') {
+      return Date.now();
+    }
+    return Math.floor(Date.now() / 1000);
+  },
+
+  idcard: () => {
+    const areaCodes = ['110101', '310101', '440305', '510107', '330102', '420106'];
+    const area = areaCodes[Math.floor(Math.random() * areaCodes.length)];
+    const year = Math.floor(Math.random() * 40) + 1970;
+    const month = (Math.floor(Math.random() * 12) + 1).toString().padStart(2, '0');
+    const day = (Math.floor(Math.random() * 28) + 1).toString().padStart(2, '0');
+    const seq = Math.floor(Math.random() * 999).toString().padStart(3, '0');
+    const base = `${area}${year}${month}${day}${seq}`;
+    const weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+    const checkCodes = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
+    let sum = 0;
+    for (let i = 0; i < 17; i++) {
+      sum += parseInt(base[i], 10) * weights[i];
+    }
+    return base + checkCodes[sum % 11];
+  },
+
+  plateNumber: () => {
+    const provinces = ['京', '沪', '粤', '苏', '浙', '鲁', '豫', '川', '湘', '鄂'];
+    const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ0123456789';
+    const province = provinces[Math.floor(Math.random() * provinces.length)];
+    const cityCode = letters[Math.floor(Math.random() * letters.length)];
+    let plate = '';
+    for (let i = 0; i < 5; i++) {
+      plate += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return `${province}${cityCode}${plate}`;
   },
 
   string: (args?: string) => {
@@ -122,7 +196,7 @@ const generators: Record<string, MockGenerator> = {
     };
   },
 
-  color: () => `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`,
+  color: () => `#${Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0')}`,
 
   url: (args?: string) => {
     const tlds = args ? args.split(',').map(s => s.trim()) : ['com', 'org', 'net', 'io', 'co', 'app', 'dev'];

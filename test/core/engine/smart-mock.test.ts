@@ -42,16 +42,11 @@ describe('generateMockData', () => {
     const result = generateMockData(template);
     expect(result.users).toBeInstanceOf(Array);
     expect(result.users).toHaveLength(3);
-    expect(result.users[0]).toEqual({
-      id: 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        const r = 0.5 * 16 | 0,
-          v = c === 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-      }),
-      age: 51 // Math.floor(0.5 * (100 - 1 + 1)) + 1 = Math.floor(50) + 1 = 51
-    });
-    expect(result.users[1]).toEqual(result.users[0]);
-    expect(result.users[2]).toEqual(result.users[0]);
+    // @guid now uses crypto.randomUUID() when available, so just validate format
+    expect(result.users[0].id).toMatch(/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/);
+    expect(result.users[0].age).toBe(51); // Math.floor(0.5 * (100 - 1 + 1)) + 1 = Math.floor(50) + 1 = 51
+    expect(result.users[1].id).toMatch(/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/);
+    expect(result.users[2].id).toMatch(/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/);
   });
 
   it('should generate data using "@generatorName" pattern', () => {
@@ -215,5 +210,213 @@ describe('generateMockData', () => {
     expect(result.longText).toMatch(/^[A-Z][a-z ]+\.$/);
     const longTextWords = result.longText.split(' ');
     expect(longTextWords.length).toBeGreaterThanOrEqual(20);
+  });
+
+  it('should generate username with default settings', () => {
+    const template = {
+      username: '@username'
+    };
+    const result = generateMockData(template);
+
+    expect(result.username).toBeDefined();
+    expect(typeof result.username).toBe('string');
+    expect(result.username.length).toBeGreaterThan(0);
+  });
+
+  it('should generate username with custom separator', () => {
+    const template = {
+      username: '@username(_)'
+    };
+    const result = generateMockData(template);
+
+    expect(result.username).toBeDefined();
+    expect(typeof result.username).toBe('string');
+    expect(result.username).toMatch(/[_]/);
+  });
+
+  it('should generate username with separator and random digits', () => {
+    const template = {
+      username: '@username(-,3)'
+    };
+    const result = generateMockData(template);
+
+    expect(result.username).toBeDefined();
+    expect(typeof result.username).toBe('string');
+    expect(result.username).toMatch(/[-]/);
+    expect(result.username).toMatch(/\d+/);
+  });
+
+  it('should generate username with separator, random digits, and max length', () => {
+    const template = {
+      username: '@username(_,2,15)'
+    };
+    const result = generateMockData(template);
+
+    expect(result.username).toBeDefined();
+    expect(typeof result.username).toBe('string');
+    expect(result.username.length).toBeLessThanOrEqual(15);
+  });
+
+  it('should generate username with all parameters including dictType', () => {
+    const template = {
+      username: '@username(-,3,20,adjectives)'
+    };
+    const result = generateMockData(template);
+
+    expect(result.username).toBeDefined();
+    expect(typeof result.username).toBe('string');
+    expect(result.username.length).toBeLessThanOrEqual(20);
+  });
+
+  it('should generate IPv4 address by default', () => {
+    const template = {
+      ip: '@ip'
+    };
+    const result = generateMockData(template);
+
+    expect(result.ip).toBeDefined();
+    expect(typeof result.ip).toBe('string');
+    expect(result.ip).toMatch(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/);
+  });
+
+  it('should generate IPv6 address with "6" argument', () => {
+    const template = {
+      ip: '@ip(6)'
+    };
+    const result = generateMockData(template);
+
+    expect(result.ip).toBeDefined();
+    expect(typeof result.ip).toBe('string');
+    expect(result.ip).toMatch(/:/);
+  });
+
+  it('should generate IPv6 address with "IPv6" argument', () => {
+    const template = {
+      ip: '@ip(IPv6)'
+    };
+    const result = generateMockData(template);
+
+    expect(result.ip).toBeDefined();
+    expect(typeof result.ip).toBe('string');
+    expect(result.ip).toMatch(/:/);
+  });
+
+  it('should generate IPv6 address with "ipv6" argument', () => {
+    const template = {
+      ip: '@ip(ipv6)'
+    };
+    const result = generateMockData(template);
+
+    expect(result.ip).toBeDefined();
+    expect(typeof result.ip).toBe('string');
+    expect(result.ip).toMatch(/:/);
+  });
+
+  it('should generate IPv6 address with "v6" argument', () => {
+    const template = {
+      ip: '@ip(v6)'
+    };
+    const result = generateMockData(template);
+
+    expect(result.ip).toBeDefined();
+    expect(typeof result.ip).toBe('string');
+    expect(result.ip).toMatch(/:/);
+  });
+
+  it('should generate multiple usernames with different configurations', () => {
+    const template = {
+      user1: '@username',
+      user2: '@username(-)',
+      user3: '@username(_,4)'
+    };
+    const result = generateMockData(template);
+
+    expect(result.user1).toBeDefined();
+    expect(result.user2).toBeDefined();
+    expect(result.user3).toBeDefined();
+    expect(result.user1).not.toBe(result.user2);
+  });
+
+  it('should handle IP addresses in nested structures', () => {
+    const template = {
+      server: {
+        ipv4: '@ip',
+        ipv6: '@ip(6)'
+      },
+      'clients|2': {
+        address: '@ip'
+      }
+    };
+    const result = generateMockData(template);
+
+    expect(result.server.ipv4).toMatch(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/);
+    expect(result.server.ipv6).toMatch(/:/);
+    expect(result.clients).toHaveLength(2);
+    expect(result.clients[0].address).toMatch(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/);
+    expect(result.clients[1].address).toMatch(/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/);
+  });
+
+  it('should generate unix timestamp in seconds by default', () => {
+    const template = {
+      ts: '@timestamp'
+    };
+    const before = Math.floor(Date.now() / 1000);
+    const result = generateMockData(template);
+    const after = Math.floor(Date.now() / 1000);
+
+    expect(typeof result.ts).toBe('number');
+    expect(result.ts).toBeGreaterThanOrEqual(before);
+    expect(result.ts).toBeLessThanOrEqual(after);
+  });
+
+  it('should generate unix timestamp in milliseconds with "ms" argument', () => {
+    const template = {
+      ts: '@timestamp(ms)'
+    };
+    const before = Date.now();
+    const result = generateMockData(template);
+    const after = Date.now();
+
+    expect(typeof result.ts).toBe('number');
+    expect(result.ts).toBeGreaterThanOrEqual(before);
+    expect(result.ts).toBeLessThanOrEqual(after);
+  });
+
+  it('should generate valid Chinese ID card number', () => {
+    const template = {
+      id: '@idcard'
+    };
+    const result = generateMockData(template);
+
+    expect(typeof result.id).toBe('string');
+    expect(result.id).toHaveLength(18);
+    expect(result.id).toMatch(/^\d{17}[\dX]$/);
+  });
+
+  it('should generate ID card with valid checksum', () => {
+    const template = {
+      id: '@idcard'
+    };
+    const result = generateMockData(template);
+
+    const weights = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2];
+    const checkCodes = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'];
+    let sum = 0;
+    for (let i = 0; i < 17; i++) {
+      sum += parseInt(result.id[i], 10) * weights[i];
+    }
+    expect(result.id[17]).toBe(checkCodes[sum % 11]);
+  });
+
+  it('should generate Chinese license plate number', () => {
+    const template = {
+      plate: '@plateNumber'
+    };
+    const result = generateMockData(template);
+
+    expect(typeof result.plate).toBe('string');
+    expect(result.plate).toHaveLength(7);
+    const provinces = ['京', '沪', '粤', '苏', '浙', '鲁', '豫', '川', '湘', '鄂'];
+    expect(provinces).toContain(result.plate[0]);
   });
 });
